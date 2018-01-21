@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OurLunch.Models.OurLunch
+namespace OurLunch.Models
 {
     [Table("Meal")]
     public class Meal

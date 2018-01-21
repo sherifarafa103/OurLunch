@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OurLunch.Models.OurLunch
+namespace OurLunch.Models
 {
     public class User
     {
@@ -13,6 +13,8 @@ namespace OurLunch.Models.OurLunch
         public int UserId { get; set; }
 
         public string FirstName { get; set; }
+
+        public string Alias { get; set; }
 
         public string LastName { get; set; }
 

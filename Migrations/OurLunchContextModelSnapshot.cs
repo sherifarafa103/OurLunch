@@ -20,7 +20,7 @@ namespace OurLunch.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.Meal", b =>
+            modelBuilder.Entity("OurLunch.Models.Meal", b =>
                 {
                     b.Property<int>("MealId")
                         .ValueGeneratedOnAdd();
@@ -36,7 +36,7 @@ namespace OurLunch.Migrations
                     b.ToTable("Meal");
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.Order", b =>
+            modelBuilder.Entity("OurLunch.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
@@ -56,7 +56,7 @@ namespace OurLunch.Migrations
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.OrderItem", b =>
+            modelBuilder.Entity("OurLunch.Models.OrderItem", b =>
                 {
                     b.Property<int>("OrderItemId")
                         .ValueGeneratedOnAdd();
@@ -80,7 +80,7 @@ namespace OurLunch.Migrations
                     b.ToTable("OrderItem");
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.Restaurant", b =>
+            modelBuilder.Entity("OurLunch.Models.Restaurant", b =>
                 {
                     b.Property<int>("RestaurantId")
                         .ValueGeneratedOnAdd();
@@ -92,10 +92,12 @@ namespace OurLunch.Migrations
                     b.ToTable("Restaurant");
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.User", b =>
+            modelBuilder.Entity("OurLunch.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Alias");
 
                     b.Property<string>("FirstName");
 
@@ -106,40 +108,40 @@ namespace OurLunch.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.Meal", b =>
+            modelBuilder.Entity("OurLunch.Models.Meal", b =>
                 {
-                    b.HasOne("OurLunch.Models.OurLunch.Restaurant", "Restaurant")
+                    b.HasOne("OurLunch.Models.Restaurant", "Restaurant")
                         .WithMany("Meals")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.Order", b =>
+            modelBuilder.Entity("OurLunch.Models.Order", b =>
                 {
-                    b.HasOne("OurLunch.Models.OurLunch.Restaurant", "Restaurant")
+                    b.HasOne("OurLunch.Models.Restaurant", "Restaurant")
                         .WithMany("Orders")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("OurLunch.Models.OurLunch.User", "User")
+                    b.HasOne("OurLunch.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("OurLunch.Models.OurLunch.OrderItem", b =>
+            modelBuilder.Entity("OurLunch.Models.OrderItem", b =>
                 {
-                    b.HasOne("OurLunch.Models.OurLunch.Meal", "Meal")
+                    b.HasOne("OurLunch.Models.Meal", "Meal")
                         .WithMany("OrderItems")
                         .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("OurLunch.Models.OurLunch.Order", "Order")
+                    b.HasOne("OurLunch.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("OurLunch.Models.OurLunch.User", "User")
+                    b.HasOne("OurLunch.Models.User", "User")
                         .WithMany("OrderItems")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

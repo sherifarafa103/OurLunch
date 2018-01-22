@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OurLunch.Models.OurLunch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OurLunch.Models;
 
 namespace OurLunch.Data
 {

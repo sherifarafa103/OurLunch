@@ -6,7 +6,7 @@ using OurLunch.Data;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/Restaurants")]
+    [Route("api/restaurants")]
     public class RestaurantController : Controller
     {
         [HttpGet]
@@ -43,9 +43,10 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.RestaurantRepository.AddRestaurant(restaurant);
+                db.Save();
             }
 
-            return CreatedAtRoute("AddRestaurant", new { id = restaurant.RestaurantId }, restaurant);
+            return new ObjectResult(restaurant.RestaurantId);
         }
 
 
@@ -55,6 +56,7 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.RestaurantRepository.UpdateRestaurant(restaurant);
+                db.Save();
             }
 
             return new NoContentResult();
@@ -62,14 +64,31 @@ namespace TodoApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteRestaurant(int id, [FromBody] Restaurant restaurant)
+        public IActionResult DeleteRestaurant(int id)
         {
             using (var db = new OurLunchDatabase())
             {
-                db.RestaurantRepository.Delete(restaurant);
+                var restaurant = db.RestaurantRepository.GetRestaurantById(id);
+
+                if (restaurant == null)
+                {
+                    return NotFound();
+                }
+
+                db.RestaurantRepository.DeleteRestaurant(restaurant);
+                db.Save();
             }
 
             return new NoContentResult();
+        }
+
+        [HttpGet("{id}/meals")]
+        public IEnumerable<Meal> GetMealsForRestaurant(int id) //retrieve from database
+        {
+            using (var db = new OurLunchDatabase())
+            {
+                return db.MealRepository.GetMealsByRestaurantId(id);
+            }
         }
 
     }

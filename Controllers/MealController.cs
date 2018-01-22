@@ -6,18 +6,18 @@ using OurLunch.Data;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/Restaurants")]
+    [Route("api/meals")]
     public class MealController : Controller
     {
        
         [HttpGet("{id}")]
-        public IActionResult GetMealById(int mealId, int restaurantId)  //retrieve from database for a certain index
+        public IActionResult GetMealById(int id)  //retrieve from database for a certain index
         {
             Meal meal;
 
             using (var db = new OurLunchDatabase())
             {
-                meal = db.MealRepository.GetMealById(mealId, restaurantId);
+                meal = db.MealRepository.GetMealById(id);
             }
 
             if (meal == null)
@@ -35,9 +35,10 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.MealRepository.AddMeal(meal);
+                db.Save();
             }
 
-            return CreatedAtRoute("AddMeal", new { id = meal.MealId }, meal);
+            return new ObjectResult(meal.MealId);
         }
 
 
@@ -47,6 +48,7 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.MealRepository.UpdateMeal(meal);
+                db.Save();
             }
 
             return new NoContentResult();
@@ -54,11 +56,19 @@ namespace TodoApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteMeal(int id, [FromBody] Meal meal)
+        public IActionResult DeleteMeal(int id)
         {
             using (var db = new OurLunchDatabase())
             {
-                db.MealRepository.Delete(meal);
+                var meal = db.MealRepository.GetMealById(id);
+
+                if (meal == null)
+                {
+                    return NotFound();
+                }
+
+                db.MealRepository.DeleteMeal(meal);
+                db.Save();
             }
 
             return new NoContentResult();

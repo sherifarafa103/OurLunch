@@ -65,9 +65,10 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.OrderRepository.AddOrder(order);
+                db.Save();
             }
 
-            return CreatedAtRoute("AddOrder", new { id = order.OrderId }, order);
+            return new ObjectResult(order.OrderId);
         }
 
 
@@ -77,6 +78,7 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.OrderRepository.UpdateOrder(order);
+                db.Save();
             }
 
             return new NoContentResult();
@@ -84,11 +86,19 @@ namespace TodoApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrder(int id, [FromBody] Order order)
+        public IActionResult DeleteOrder(int id)
         {
             using (var db = new OurLunchDatabase())
             {
-                db.UserRepository.Delete(order);
+                var order = db.OrderRepository.GetOrderById(id);
+
+                if(order == null)
+                {
+                    return NotFound();
+                }
+
+                db.OrderRepository.DeleteOrder(order);
+                db.Save();
             }
 
             return new NoContentResult();

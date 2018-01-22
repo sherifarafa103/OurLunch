@@ -36,7 +36,7 @@ namespace TodoApi.Controllers
             return new ObjectResult(orderItem);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("useritemsinorder/{id}")]
         public IActionResult GetOrderItemsForOneUser(int userId, int orderId)  //retrieve from database for a certain index
         {
             OrderItem orderItem;
@@ -61,9 +61,10 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.OrderItemRepository.AddOrderItem(orderItem);
+                db.Save();
             }
 
-            return CreatedAtRoute("AddOrderItem", new { id = orderItem.OrderItemId }, orderItem);
+            return new ObjectResult(orderItem.OrderItemId);
         }
 
 
@@ -73,6 +74,7 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 db.OrderItemRepository.UpdateOrderItem(orderItem);
+                db.Save();
             }
 
             return new NoContentResult();
@@ -80,11 +82,19 @@ namespace TodoApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrderItem(int id, [FromBody] OrderItem orderItem)
+        public IActionResult DeleteOrderItem(int id)
         {
             using (var db = new OurLunchDatabase())
             {
-                db.OrderItemRepository.Delete(orderItem);
+                var orderItem = db.OrderItemRepository.GetOrderItemByOrderItemId(id);
+
+                if (orderItem == null)
+                {
+                    return NotFound();
+                }
+
+                db.OrderItemRepository.DeleteOrderItem(orderItem);
+                db.Save();
             }
 
             return new NoContentResult();

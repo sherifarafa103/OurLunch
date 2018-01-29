@@ -5,11 +5,12 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 // Components
 import { WelcomePage } from '../pages/welcome/welcome.component';
 import { SignUpPage } from '../pages/sign-up/sign-up.component';
-import { SignInPage } from '../pages/sign-In/sign-in.component';
+import { SignInPage } from '../pages/sign-in/sign-in.component';
 import { MyApp } from './app.component';
-import { OrdersHistoryPage } from '../pages/OrdersHistory/OrdersHistory';
+import { OrdersHistoryPage } from '../pages/orders/orders.component';
 import { CreateOrderPage } from '../pages/CreateOrder/CreateOrder';
 import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
+import { MainPage } from '../pages/main/main.component';
 
 // Services
 import { HttpModule } from '@angular/http';
@@ -31,6 +32,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         CreateOrderPage,
         MakeOrderItemPage,
         WelcomePage,
+        MainPage
     ],
     imports: [
         BrowserModule,
@@ -46,6 +48,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         CreateOrderPage,
         MakeOrderItemPage,
         WelcomePage,
+        MainPage
     ],
     providers: [
         StatusBar,

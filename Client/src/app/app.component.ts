@@ -5,10 +5,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { WelcomePage } from '../pages/welcome/welcome.component';
 import { SignUpPage } from '../pages/sign-up/sign-up.component';
-import { SignInPage } from '../pages/sign-In/sign-in.component';
-import { OrdersHistoryPage } from '../pages/OrdersHistory/OrdersHistory';
+import { SignInPage } from '../pages/sign-in/sign-in.component';
+import { OrdersHistoryPage } from '../pages/orders/orders.component';
 import { CreateOrderPage } from '../pages/CreateOrder/CreateOrder';
 import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
+import { MainPage } from '../pages/main/main.component';
 
 @Component({
     templateUrl: 'app.html'
@@ -16,7 +17,7 @@ import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = SignUpPage;
+    rootPage: any = WelcomePage;
 
     pages: Array<{ title: string, component: any }>;
 
@@ -25,12 +26,11 @@ export class MyApp {
 
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Welcome', component: WelcomePage },
-            { title: 'SignUp!', component: SignUpPage },
-            { title: 'Sign In', component: SignInPage },
-            { title: 'Orders History', component: OrdersHistoryPage },
+            { title: 'Home', component: MainPage },
             { title: 'Create Order', component: CreateOrderPage },
-            { title: 'Make Order Item', component: MakeOrderItemPage },
+            { title: 'Active Orders', component: OrdersHistoryPage },
+            { title: 'Orders History', component: OrdersHistoryPage },
+            { title: 'Make Order Item', component: MakeOrderItemPage }
         ];
 
     }

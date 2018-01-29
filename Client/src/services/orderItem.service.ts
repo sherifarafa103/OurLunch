@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/Rx'
 import { OrderItem } from '../models/orderItem.model';
+import { BaseService } from '../services/base.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class OrderItemService {
+    constructor(
+        private _baseService: BaseService,
+        private _httpService: Http
+    ) { }
 
-  constructor(private _httpService: Http) { }
+    public get(orderId: number): Observable<OrderItem[]> {
+        return this._httpService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`)
+            .map(r => r.json());
+    }
 
-  //signIn(alias: string) {
-  //return this._httpService.get(`http://localhost:55013/api/users/alias/${alias}`).map(r => r.json());
-  //}
-
-  addOrderItem(orderItem: OrderItem) {
-    return this._httpService.post('http://localhost:55013/api/orderItems', orderItem);
-  }
-
-  getOrderItems() {
-    return this._httpService.get('http://localhost:55013/api/orderItems');
-  }
-
+    public add(item: OrderItem): Observable<number> {
+        return this._httpService.post(`${this._baseService.baseUrl}/orderItems`, item)
+            .map(r => r.json());
+    }
 }

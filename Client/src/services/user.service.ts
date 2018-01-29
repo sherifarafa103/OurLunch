@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/Rx'
 import { User } from '../models/user.model';
+import { BaseService } from '../services/base.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class UserService {
+    constructor(
+        private _baseService: BaseService,
+        private _httpService: Http
+    ) { }
 
-  constructor(private _httpService: Http) { }
+    public signIn(alias: string): Observable<User> {
+        return this._httpService.get(`${this._baseService.baseUrl}/users/alias/${alias}`)
+            .map(r => r.json());
+    }
 
-  signIn(alias: string) {
-    return this._httpService.get(`http://localhost:55013/api/users/alias/${alias}`).map(r => r.json());
-  }
-
-  addUser(user: User) {
-    return this._httpService.post('http://localhost:55013/api/users', user);
-  }
-
+    public add(user: User): Observable<number> {
+        return this._httpService.post(`${this._baseService.baseUrl}/users`, user)
+            .map(r => r.json());
+    }
 }

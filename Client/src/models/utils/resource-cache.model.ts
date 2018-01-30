@@ -11,7 +11,7 @@ const CACHE_SENTINEL: { sentinel: boolean } = { sentinel: true };
  * when changes in the cache occur. Returns items in descending order of their timestamp of addition.
  */
 export class ResourceCache {
-    private _items: Cacheable<IResource>[];
+    private _items: Cacheable<IResource>[] = [];
     private _subject: BehaviorSubject<IResource[]>;
     private _nonceIterator: number = 0;
 

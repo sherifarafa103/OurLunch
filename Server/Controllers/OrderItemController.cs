@@ -21,19 +21,19 @@ namespace TodoApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetOrderItemsByOrderId(int id)  //retrieve from database for a certain index
         {
-            OrderItem orderItem;
+            List<OrderItem> orderItems;
 
             using (var db = new OurLunchDatabase())
             {
-                orderItem = db.OrderItemRepository.GetOrderItemsByOrderId(id);
+                orderItems = db.OrderItemRepository.GetOrderItemsByOrderId(id);
             }
 
-            if (orderItem == null)
+            if (orderItems == null)
             {
                 return NotFound();
             }
 
-            return new ObjectResult(orderItem);
+            return new ObjectResult(orderItems);
         }
 
         [HttpGet("useritemsinorder/{id}")]

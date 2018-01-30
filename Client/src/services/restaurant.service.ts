@@ -1,33 +1,29 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 import { Restaurant } from '../models/restaurant.model';
 import { BaseService } from '../services/base.service';
-import { Observable } from 'rxjs/Rx';
+import { CacheService } from './utils/cache.service';
 
 @Injectable()
 export class RestaurantService {
     constructor(
         private _baseService: BaseService,
-        private _httpService: Http
+        private _cacheService: CacheService
     ) { }
 
     public get(): Observable<Restaurant[]> {
-        return this._httpService.get(`${this._baseService.baseUrl}/restaurants`)
-            .map(r => r.json());
+        return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi, null);
     }
 
     public add(restaurant: Restaurant): Observable<number> {
-        return this._httpService.post(`${this._baseService.baseUrl}/restaurants`, restaurant)
-            .map(r => r.json());
+        return this._cacheService.post(`${this._baseService.baseUrl}/restaurants`, restaurant, null);
     }
 
     public update(id: number, restaurant: Restaurant): Observable<void> {
-        return this._httpService.post(`${this._baseService.baseUrl}/restaurants/${id}`, restaurant)
-            .map(r => r.json());
+        return this._cacheService.put(`${this._baseService.baseUrl}/restaurants`, restaurant, null);
     }
 
     public delete(id: number): Observable<void> {
-        return this._httpService.delete(`${this._baseService.baseUrl}/restaurants/${id}`)
-            .map(r => r.json());
+        return this._cacheService.delete(`${this._baseService.baseUrl}/restaurants`, id, null);
     }
 }

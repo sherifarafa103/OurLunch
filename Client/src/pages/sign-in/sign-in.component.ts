@@ -33,15 +33,18 @@ export class SignInPage {
      * Signs the user in to the system.
      */
     public signIn(): void {
-        if (this.alias.trim() !== "") {
-            let loader = this._loadingController.create({ content: "Signing in" });
-            loader.present();
-
-            this._userService.signIn(this.alias)
-                .finally(() => loader.dismiss())
-                .subscribe(() => this._viewController.dismiss(), () => this._baseService.showErrorToast(
-                    "User does not exist or a server error occurred.")
-                );
+        if (this.alias.trim() === '') {
+            this._baseService.showErrorToast('Alias is required');
+            return;
         }
+
+        let loader = this._loadingController.create({ content: "Signing in" });
+        loader.present();
+
+        this._userService.signIn(this.alias)
+            .finally(() => loader.dismiss())
+            .subscribe(() => this._viewController.dismiss(), () => this._baseService.showErrorToast(
+                "User does not exist or a server error occurred.")
+            );
     }
 }

@@ -18,10 +18,13 @@ import { MainPage } from '../pages/main/main.component';
 // Services
 import { HttpModule } from '@angular/http';
 import { BaseService } from '../services/base.service';
+import { CacheService } from '../services/utils/cache.service';
+import { HttpService } from '../services/utils/http.service';
 import { UserService } from '../services/user.service';
 import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
 import { OrderItemService } from '../services/orderItem.service';
+import { MealService } from '../services/meal.service';
 
 // Ionic components
 import { StatusBar } from '@ionic-native/status-bar';
@@ -64,11 +67,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
+        CacheService,
+        HttpService,
         BaseService,
         UserService,
         OrderService,
         OrderItemService,
-        RestaurantService
+        RestaurantService,
+        MealService
     ]
 })
 export class AppModule { }

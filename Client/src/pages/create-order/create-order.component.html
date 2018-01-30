@@ -17,7 +17,7 @@
         <ion-label floating>Restaurant</ion-label>
 
         <ion-select [(ngModel)]="restaurantId">
-            <ion-option *ngFor="let restaurant of restaurants | async" [value]="restaurant.restaurantId">{{ restaurant.name }}</ion-option>
+            <ion-option *ngFor="let restaurant of restaurants | async" [value]="restaurant.id">{{ restaurant.name }}</ion-option>
         </ion-select>
     </ion-item>
     <a margin [style.display]="'block'" (click)="openPopover($event)">Can't find your restaurant? Add it</a>

@@ -23,18 +23,11 @@ export class CacheService {
 
     public get(path: string, parser: IResourceApiParser, requestOptions: RequestOptions): Observable<IResource[]> {
         let cache: ResourceCache;
+        cache = this._getCache(path);
 
-        if (!this.checkForCache(path)) {
-            cache = this._getCache(path);
-            cache.reset();
-
-            this._httpService.get(path, requestOptions)
-                .map(response => (<any[]>response).map(datum => parser(datum)))
-                .subscribe(data => cache.set(data));
-        }
-        else {
-            cache = this._getCache(path);
-        }
+        this._httpService.get(path, requestOptions)
+            .map(response => (<any[]>response).map(datum => parser(datum)))
+            .subscribe(data => cache.set(data));
 
         return cache.getItems();
     }

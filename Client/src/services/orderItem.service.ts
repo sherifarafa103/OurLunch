@@ -3,21 +3,20 @@ import { Http } from '@angular/http';
 import { OrderItem } from '../models/orderItem.model';
 import { BaseService } from '../services/base.service';
 import { Observable } from 'rxjs/Rx';
+import { CacheService } from './utils/cache.service';
 
 @Injectable()
 export class OrderItemService {
     constructor(
         private _baseService: BaseService,
-        private _httpService: Http
+        private _cacheService: CacheService
     ) { }
 
     public get(orderId: number): Observable<OrderItem[]> {
-        return this._httpService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`)
-            .map(r => r.json());
+        return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi, null);
     }
 
     public add(item: OrderItem): Observable<number> {
-        return this._httpService.post(`${this._baseService.baseUrl}/orderItems`, item)
-            .map(r => r.json());
+        return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item, null);
     }
 }

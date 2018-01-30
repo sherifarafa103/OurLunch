@@ -37,15 +37,41 @@ export class SignUpPage {
      * Signs the user up.
      */
     public signUp(): void {
-        if (this.alias.trim() !== '' && this.firstName.trim() !== '' && this.lastName.trim() !== '') {
-            let loader = this._loadingController.create({ content: "Signing in" });
-            loader.present();
-
-            let user = new User(this.alias, this.firstName, this.lastName);
-
-
-            this._userService.add(user)
-                .subscribe(() => this._navController.push(MainPage), () => this._baseService.showErrorToast('A server error occurred!'));
+        if (!this._validateForm()) {
+            return;
         }
+
+        let loader = this._loadingController.create({ content: "Signing in" });
+        let user = new User(0, this.alias, this.firstName, this.lastName);
+
+        loader.present();
+
+        this._userService.add(user)
+            .finally(() => loader.dismiss())
+            .subscribe(() => this._navController.push(MainPage), () => this._baseService.showErrorToast('A server error occurred!'));
+    }
+
+    /**
+     * @private
+     * @description
+     * Validates the user form.
+     */
+    private _validateForm(): boolean {
+        if (this.alias.trim() === '') {
+            this._baseService.showErrorToast('Alias is required');
+            return false;
+        }
+
+        if (this.firstName.trim() === '') {
+            this._baseService.showErrorToast('First name is required');
+            return false;
+        }
+
+        if (this.lastName.trim() === '') {
+            this._baseService.showErrorToast('Last name is required');
+            return false;
+        }
+
+        return true;
     }
 }

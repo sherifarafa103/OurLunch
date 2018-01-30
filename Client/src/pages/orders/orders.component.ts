@@ -6,6 +6,8 @@ import { NavController } from 'ionic-angular';
     templateUrl: 'orders.component.html'
 })
 export class OrdersPage {
+    public startFilter: Date;
+    public endFilter: Date;
 
     constructor(public navCtrl: NavController) { }
 }

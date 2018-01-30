@@ -8,18 +8,27 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
-        <ion-card-header>
-        </ion-card-header>
+    <ion-item>
+        <ion-label>From</ion-label>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    </ion-item>
 
-        <ion-card-content>
-            <div class="row">
-                <div class="col">Meal name</div>
-                <div class="col">Restaurant</div>
-                <div class="col">Time</div>
-                <div class="col">Owner</div>
-                <div class="col">User</div>
-            </div>
-        </ion-card-content>
-    </ion-card>
+    <ion-item>
+        <ion-label>To</ion-label>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    </ion-item>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Owner</th>
+                <th>Restaurant</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let order of orders"></tr>
+        </tbody>
+    </table>
 </ion-content>

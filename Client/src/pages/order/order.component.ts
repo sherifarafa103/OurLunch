@@ -35,13 +35,13 @@ export class OrderPage {
     private _initState(): void {
         this.order = this._navParams.get('order');
         this.restaurant = this._restaurantService.get()
-            .map(restaurants => restaurants.find(r => r.restaurantId === this.order.restaurantId));
+            .map(restaurants => restaurants.find(r => r.id === this.order.restaurantId));
 
         this.users = this._userService.get();
 
         this.meals = this._mealService.get(this.order.restaurantId);
 
-        this.user = this.users.map(users => users.find(u => u.userId === this.order.userId));
+        this.user = this.users.map(users => users.find(u => u.id === this.order.userId));
 
         this.time = Observable.timer(0, 60000)
             .map(() => this._getMinuteDifference(this.order.time, new Date()));

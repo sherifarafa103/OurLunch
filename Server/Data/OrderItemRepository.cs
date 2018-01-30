@@ -16,9 +16,9 @@ namespace OurLunch.Data
             return Get().ToList();
         }
 
-        public virtual OrderItem GetOrderItemsByOrderId(int orderId)
+        public virtual List<OrderItem> GetOrderItemsByOrderId(int orderId)
         {
-            return Get(i=> i.OrderId == orderId).SingleOrDefault();
+            return Get(i=> i.OrderId == orderId).ToList();
         }
 
         public virtual OrderItem GetOrderItemByOrderItemId(int orderItemId)
@@ -45,25 +45,5 @@ namespace OurLunch.Data
         {
             Delete(orderItem);
         }
-
-        /*
-        public void UpdateOrderItem(Guid orderItemId, int orderId, int mealId, int userId, float price)
-        {
-            var record = GetByID(orderId);
-            record.OrderId = orderId;
-            record.MealId = mealId;
-            record.UserId = userId;
-            record.Price = price;
-            Update(record);
-        }
-        */
-        /*
-        public void UpdateOrderItem(OrderItem updatedOrderItem)
-        {
-            Update(updatedOrderItem);
-        }
-        */
-        
-       
     }
 }

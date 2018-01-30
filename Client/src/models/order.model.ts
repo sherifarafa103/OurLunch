@@ -1,13 +1,12 @@
 export class Order {
-  userId: number;
-  restaurantId: number;
-  time: Date;
+    orderId: number;
+    userId: number;
+    restaurantId: number;
+    time: Date;
 
-
-  constructor(owner, restaurantId, time) {
-    this.userId = owner;
-    this.restaurantId = restaurantId;
-    this.time = time;
-
-  }
+    constructor(ownerId: number, restaurantId: number, time: Date) {
+        this.userId = ownerId;
+        this.restaurantId = restaurantId;
+        this.time = time;
+    }
 }

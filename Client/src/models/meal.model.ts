@@ -1,11 +1,11 @@
 export class Meal {
-  mealId: number;
-  name: string;
-  retaurantId: number;
+    mealId: number;
+    retaurantId: number;
+    name: string;
 
-  constructor(mealId, name, retaurantId) {
-    this.mealId = mealId;
-    this.name = name;
-    this.retaurantId = retaurantId;
-  }
+    constructor(mealId: number, retaurantId: number, name: string) {
+        this.mealId = mealId;
+        this.retaurantId = retaurantId;
+        this.name = name;
+    }
 }

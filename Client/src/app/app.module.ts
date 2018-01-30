@@ -9,6 +9,7 @@ import { SignUpPage } from '../pages/sign-up/sign-up.component';
 import { SignInPage } from '../pages/sign-in/sign-in.component';
 import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
 import { CreateOrderPage } from '../pages/create-order/create-order.component';
+import { RestaurantPopover } from '../pages/create-order/restaurant-popover/restaurant-popover.component';
 import { OrdersPage } from '../pages/orders/orders.component';
 import { OrderPage } from '../pages/order/order.component';
 import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
@@ -37,7 +38,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         WelcomePage,
         MainPage,
         ActiveOrdersPage,
-        OrderPage
+        OrderPage,
+        RestaurantPopover
     ],
     imports: [
         BrowserModule,
@@ -55,7 +57,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         WelcomePage,
         MainPage,
         ActiveOrdersPage,
-        OrderPage
+        OrderPage,
+        RestaurantPopover
     ],
     providers: [
         StatusBar,

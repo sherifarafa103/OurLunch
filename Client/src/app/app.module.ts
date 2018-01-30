@@ -3,12 +3,14 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 // Components
+import { MyApp } from './app.component';
 import { WelcomePage } from '../pages/welcome/welcome.component';
 import { SignUpPage } from '../pages/sign-up/sign-up.component';
 import { SignInPage } from '../pages/sign-in/sign-in.component';
-import { MyApp } from './app.component';
-import { OrdersHistoryPage } from '../pages/orders/orders.component';
-import { CreateOrderPage } from '../pages/CreateOrder/CreateOrder';
+import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
+import { CreateOrderPage } from '../pages/create-order/create-order.component';
+import { OrdersPage } from '../pages/orders/orders.component';
+import { OrderPage } from '../pages/order/order.component';
 import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
 import { MainPage } from '../pages/main/main.component';
 
@@ -17,6 +19,7 @@ import { HttpModule } from '@angular/http';
 import { BaseService } from '../services/base.service';
 import { UserService } from '../services/user.service';
 import { OrderService } from '../services/order.service';
+import { RestaurantService } from '../services/restaurant.service';
 import { OrderItemService } from '../services/orderItem.service';
 
 // Ionic components
@@ -27,12 +30,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     declarations: [
         MyApp,
         SignUpPage,
-        OrdersHistoryPage,
+        OrdersPage,
         SignInPage,
         CreateOrderPage,
         MakeOrderItemPage,
         WelcomePage,
-        MainPage
+        MainPage,
+        ActiveOrdersPage,
+        OrderPage
     ],
     imports: [
         BrowserModule,
@@ -43,12 +48,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     entryComponents: [
         MyApp,
         SignUpPage,
-        OrdersHistoryPage,
+        OrdersPage,
         SignInPage,
         CreateOrderPage,
         MakeOrderItemPage,
         WelcomePage,
-        MainPage
+        MainPage,
+        ActiveOrdersPage,
+        OrderPage
     ],
     providers: [
         StatusBar,
@@ -57,7 +64,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         BaseService,
         UserService,
         OrderService,
-        OrderItemService
+        OrderItemService,
+        RestaurantService
     ]
 })
 export class AppModule { }

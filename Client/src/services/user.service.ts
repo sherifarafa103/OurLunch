@@ -7,7 +7,7 @@ import 'rxjs';
 
 @Injectable()
 export class UserService {
-    public currentUser: User;
+    public currentUser: User = null;
 
     constructor(
         private _baseService: BaseService,

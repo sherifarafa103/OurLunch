@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController } from 'ionic-angular';
+import { ViewController, LoadingController } from 'ionic-angular';
 import { UserService } from '../../services/user.service';
 import { BaseService } from '../../services/base.service';
 import { MainPage } from '../main/main.component';
@@ -13,16 +13,25 @@ export class SignInPage {
 
     constructor(
         private _viewController: ViewController,
-        private _navController: NavController,
         private _baseService: BaseService,
         private _loadingController: LoadingController,
         private _userService: UserService
     ) { }
 
+    /**
+     * @method
+     * @description
+     * Closes the sign in form.
+     */
     public dismiss(): void {
         this._viewController.dismiss();
     }
 
+    /**
+     * @method
+     * @description
+     * Signs the user in to the system.
+     */
     public signIn(): void {
         if (this.alias.trim() !== "") {
             let loader = this._loadingController.create({ content: "Signing in" });
@@ -30,7 +39,7 @@ export class SignInPage {
 
             this._userService.signIn(this.alias)
                 .finally(() => loader.dismiss())
-                .subscribe(() => this._navController.push(MainPage), () => this._baseService.showErrorToast(
+                .subscribe(() => this._viewController.dismiss(), () => this._baseService.showErrorToast(
                     "User does not exist or a server error occurred.")
                 );
         }

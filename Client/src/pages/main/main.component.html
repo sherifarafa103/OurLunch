@@ -1,8 +1,25 @@
-<div class="full-page">
-    <img class="image" src="http://pngimg.com/uploads/microsoft/microsoft_PNG14.png">
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Main Page</ion-title>
+    </ion-navbar>
+</ion-header>
 
-    <div text-center>
-        <button ion-button large (click)="viewActiveOrders()">View Active Orders</button>
-        <button ion-button large (click)="createOrder()">Create New Order</button>
+<ion-content padding>
+    <div class="full-page">
+        <img class="image" src="http://pngimg.com/uploads/microsoft/microsoft_PNG14.png">
+
+        <div text-center padding>
+            <button ion-button large block color="dark" (click)="viewActiveOrders()">
+                <ion-icon name="list-box" margin-right></ion-icon>
+                View Active Orders
+            </button>
+            <button ion-button large block color="secondary" (click)="createOrder()">
+                <ion-icon name="add-circle" margin-right></ion-icon>
+                Create New Order
+            </button>
+        </div>
     </div>
-</div>
+</ion-content>

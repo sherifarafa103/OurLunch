@@ -21,7 +21,8 @@ namespace OurLunch.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OurLunch;Trusted_Connection=True;");
+            optionsBuilder.UseInMemoryDatabase("OurLunch");
+            // optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OurLunch;Trusted_Connection=True;");
         }
 
     }

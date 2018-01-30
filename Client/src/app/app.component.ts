@@ -3,11 +3,9 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { WelcomePage } from '../pages/welcome/welcome.component';
-import { SignUpPage } from '../pages/sign-up/sign-up.component';
-import { SignInPage } from '../pages/sign-in/sign-in.component';
-import { OrdersHistoryPage } from '../pages/orders/orders.component';
-import { CreateOrderPage } from '../pages/CreateOrder/CreateOrder';
+import { OrdersPage } from '../pages/orders/orders.component';
+import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
+import { CreateOrderPage } from '../pages/create-order/create-order.component';
 import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
 import { MainPage } from '../pages/main/main.component';
 
@@ -15,11 +13,10 @@ import { MainPage } from '../pages/main/main.component';
     templateUrl: 'app.html'
 })
 export class MyApp {
-    @ViewChild(Nav) nav: Nav;
+    @ViewChild(Nav) public nav: Nav;
 
-    rootPage: any = WelcomePage;
-
-    pages: Array<{ title: string, component: any }>;
+    public rootPage: any = MainPage;
+    public pages: Array<{ title: string, component: any }>;
 
     constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
         this.initializeApp();
@@ -28,21 +25,30 @@ export class MyApp {
         this.pages = [
             { title: 'Home', component: MainPage },
             { title: 'Create Order', component: CreateOrderPage },
-            { title: 'Active Orders', component: OrdersHistoryPage },
-            { title: 'Orders History', component: OrdersHistoryPage },
+            { title: 'Active Orders', component: ActiveOrdersPage },
+            { title: 'Orders History', component: OrdersPage },
             { title: 'Make Order Item', component: MakeOrderItemPage }
         ];
-
     }
 
-    initializeApp() {
+    /**
+     * @method
+     * @description
+     * Initializes the application.
+     */
+    public initializeApp(): void {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
     }
 
-    openPage(page) {
+    /**
+     * @method
+     * @description
+     * Opens the given page.
+     */
+    public openPage(page): void {
         this.nav.setRoot(page.component);
     }
 }

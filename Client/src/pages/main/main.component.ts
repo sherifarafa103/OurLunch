@@ -34,7 +34,7 @@ export class MainPage {
      * Navigate to create order page.
      */
     public createOrder(): void {
-        this._navController.setRoot(CreateOrderPage, null, { animate: true });
+        this._navController.push(CreateOrderPage, null, { animate: true });
     }
 
     /**

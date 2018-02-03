@@ -36,7 +36,6 @@ namespace TodoApi.Controllers
             return new ObjectResult(meal);
         }
 
-
         [HttpPost]
         public IActionResult AddMeal([FromBody] Meal meal)
         {
@@ -50,7 +49,6 @@ namespace TodoApi.Controllers
             return new ObjectResult(meal.MealId);
         }
 
-
         [HttpPut("{id}")]
         public IActionResult UpdateMeal(int id, [FromBody] Meal meal)
         {
@@ -63,7 +61,6 @@ namespace TodoApi.Controllers
 
             return new NoContentResult();
         }
-
 
         [HttpDelete("{id}")]
         public IActionResult DeleteMeal(int id)

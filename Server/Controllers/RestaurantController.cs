@@ -67,7 +67,6 @@ namespace TodoApi.Controllers
             return new ObjectResult(restaurant.RestaurantId);
         }
 
-
         [HttpPut("{id}")]
         public IActionResult UpdateRestaurant(int id, [FromBody] Restaurant restaurant)
         {
@@ -80,7 +79,6 @@ namespace TodoApi.Controllers
 
             return new NoContentResult();
         }
-
 
         [HttpDelete("{id}")]
         public IActionResult DeleteRestaurant(int id)

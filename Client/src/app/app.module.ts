@@ -14,6 +14,10 @@ import { OrdersPage } from '../pages/orders/orders.component';
 import { OrderPage } from '../pages/order/order.component';
 import { MainPage } from '../pages/main/main.component';
 
+// Pipes
+import { UserNameAsyncPipe } from '../pages/orders/user-name-async.pipe';
+import { RestaurantNameAsyncPipe } from '../pages/orders/restaurant-name-async.pipe';
+
 // Services
 import { HttpModule } from '@angular/http';
 import { BaseService } from '../services/base.service';
@@ -42,7 +46,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         MainPage,
         ActiveOrdersPage,
         OrderPage,
-        RestaurantPopover
+        RestaurantPopover,
+        UserNameAsyncPipe,
+        RestaurantNameAsyncPipe
     ],
     imports: [
         BrowserModule,

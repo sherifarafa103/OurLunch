@@ -15,8 +15,8 @@ export class UserService {
         private _cacheService: CacheService
     ) { }
 
-    public get(): Observable<User[]> {
-        return <Observable<User[]>>this._cacheService.get(`${this._baseService.baseUrl}/users`, User.importFromApi);
+    public get(refresh: boolean = false): Observable<User[]> {
+        return <Observable<User[]>>this._cacheService.get(`${this._baseService.baseUrl}/users`, User.importFromApi, refresh);
     }
 
     public signIn(alias: string): Observable<User> {

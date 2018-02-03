@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import { OrderItem } from '../models/orderItem.model';
 import { BaseService } from '../services/base.service';
 import { Observable } from 'rxjs/Rx';
@@ -12,11 +11,22 @@ export class OrderItemService {
         private _cacheService: CacheService
     ) { }
 
-    public get(orderId: number): Observable<OrderItem[]> {
-        return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi);
+    public get(orderId: number, refresh: boolean = false): Observable<OrderItem[]> {
+        return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi, refresh);
     }
 
     public add(item: OrderItem): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item);
+        return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item)
+            .do(() => this._cacheService.post(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true));
+    }
+
+    public update(item: OrderItem): Observable<void> {
+        return this._cacheService.put(`${this._baseService.baseUrl}/orderItems`, item)
+            .do(() => this._cacheService.put(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true));
+    }
+
+    public delete(item: OrderItem): Observable<void> {
+        return this._cacheService.delete(`${this._baseService.baseUrl}/orderItems`, item.id)
+            .do(() => this._cacheService.delete(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item.id, true));
     }
 }

@@ -20,11 +20,11 @@ export class CacheService {
         this._cacheMap = new Map<string, ResourceCache>();
     }
 
-    public get(path: string, parser: IResourceApiParser, refresh: boolean = false): Observable<IResource[]> {
+    public get(path: string, parser: IResourceApiParser, refresh: boolean = false, cachePath: string = null): Observable<IResource[]> {
         let cache: ResourceCache;
 
-        if (!this._checkForCache(path) || refresh) {
-            cache = this._getCache(path);
+        if (!this._checkForCache(cachePath ? cachePath : path) || refresh) {
+            cache = this._getCache(cachePath ? cachePath : path);
             cache.reset();
 
             this._httpService.get(path)
@@ -32,7 +32,7 @@ export class CacheService {
                 .subscribe(data => cache.set(data));
         }
         else {
-            cache = this._getCache(path);
+            cache = this._getCache(cachePath ? cachePath : path);
         }
 
         return cache.getItems();

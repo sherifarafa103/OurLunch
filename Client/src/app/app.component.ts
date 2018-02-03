@@ -1,13 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { OrdersPage } from '../pages/orders/orders.component';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Nav, Platform } from 'ionic-angular';
 import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
 import { CreateOrderPage } from '../pages/create-order/create-order.component';
 import { MainPage } from '../pages/main/main.component';
-
+import { OrdersPage } from '../pages/orders/orders.component';
 import { RealTimeUpdaterService } from '../services/utils/real-time-updater.service';
 
 @Component({
@@ -21,13 +19,13 @@ export class MyApp {
 
     constructor(
         private _updaterService: RealTimeUpdaterService,
-        public platform: Platform,
-        public statusBar: StatusBar,
-        public splashScreen: SplashScreen
+        private _platform: Platform,
+        private _statusBar: StatusBar,
+        private _splashScreen: SplashScreen
     ) {
         this.initializeApp();
 
-        // used for an example of ngFor and navigation
+        // Used for an example of ngFor and navigation
         this.pages = [
             { title: 'Home', component: MainPage },
             { title: 'Create Order', component: CreateOrderPage },
@@ -42,9 +40,11 @@ export class MyApp {
      * Initializes the application.
      */
     public initializeApp(): void {
-        this.platform.ready().then(() => {
-            this.statusBar.styleDefault();
-            this.splashScreen.hide();
+        this._updaterService.initService();
+
+        this._platform.ready().then(() => {
+            this._statusBar.styleDefault();
+            this._splashScreen.hide();
         });
     }
 

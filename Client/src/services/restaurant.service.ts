@@ -11,8 +11,8 @@ export class RestaurantService {
         private _cacheService: CacheService
     ) { }
 
-    public get(): Observable<Restaurant[]> {
-        return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi);
+    public get(refresh: boolean = false): Observable<Restaurant[]> {
+        return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi, refresh);
     }
 
     public add(restaurant: Restaurant): Observable<number> {

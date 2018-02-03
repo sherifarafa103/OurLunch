@@ -2,24 +2,33 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Order } from '../models/order.model';
 import { BaseService } from '../services/base.service';
+import { HttpService } from '../services/utils/http.service';
 import { CacheService } from '../services/utils/cache.service';
 
 @Injectable()
 export class OrderService {
     constructor(
         private _baseService: BaseService,
+        private _httpService: HttpService,
         private _cacheService: CacheService
     ) { }
 
-    public get(): Observable<Order[]> {
-        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders`, Order.importFromApi);
+    public getActiveOrders(refresh: boolean = false): Observable<Order[]> {
+        const start: Date = new Date();
+        const end: Date = new Date();
+        end.setDate(end.getDate() + 1);
+
+        return <Observable<Order[]>>this._cacheService.get(
+            `${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}/`,
+            Order.importFromApi,
+            refresh,
+            `${this._baseService.baseUrl}/orders`
+        );
     }
 
     public getByDate(start: Date, end: Date): Observable<Order[]> {
-        start.setHours(0, 0, 0, 0);
-        end.setHours(0, 0, 0, 0);
-
-        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}`, Order.importFromApi);
+        return <Observable<Order[]>>this._httpService.get(`${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}/`)
+            .map(data => data.map(d => Order.importFromApi(d)));
     }
 
     public add(order: Order): Observable<number> {

@@ -10,15 +10,7 @@ import { BaseService } from '../base.service';
  */
 @Injectable()
 export class WebsocketService {
-    private _connString: string;
-    private readonly _hubName: string = 'realTimeNotifier';
-    private readonly _serverMethodName: string = 'send';
-    private readonly _clientMethodName: string = 'send';
-
-    private _connection: SignalR.Hub.Connection;
-    private _hubProxy: SignalR.Hub.Proxy;
     private _response: BehaviorSubject<INotification> = new BehaviorSubject(null);
-    private _isReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     constructor(private _baseService: BaseService) {
         this._initService();
@@ -38,21 +30,6 @@ export class WebsocketService {
     /**
      * @method
      * @description
-     * Invokes a server call to the web socket hub.
-     *
-     * @param {number} id A unique caller id to identify the message.
-     */
-    public invokeCall(id: number): void {
-        this._isReady
-            .asObservable()
-            .first()
-            .filter(status => status)
-            .subscribe(status => this._hubProxy.invoke(this._serverMethodName, id));
-    }
-
-    /**
-     * @method
-     * @description
      * Helper function that casts the response into a concrete business logic interface (object)
      * that the rest of the application can use. It also adds that response to the server
      * responses queue (subject).
@@ -61,7 +38,7 @@ export class WebsocketService {
      * @param {string} response The json response that returned from that call.
      */
     private _handleCallResponse(message: any): void {
-        const serverResponse: INotification = { path: message.Path, method: message.Method };
+        const serverResponse: INotification = { path: message.Path, method: message.Method, data: message.Data };
         this._response.next(serverResponse);
     }
 
@@ -73,6 +50,6 @@ export class WebsocketService {
      */
     private _initService(): void {
         let connection = new WebSocket(`ws://${this._baseService.serverOrigin}`);
-        connection.onmessage = m => console.log(m);
+        connection.onmessage = (m: MessageEvent) => this._handleCallResponse(JSON.parse(m.data));
     }
 }

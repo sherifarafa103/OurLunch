@@ -1,5 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
-import { RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { IResource, IResourceApiParser } from '../../interfaces/IResource';
 import { ResourceCache } from '../../models/utils/resource-cache.model';
@@ -21,37 +20,64 @@ export class CacheService {
         this._cacheMap = new Map<string, ResourceCache>();
     }
 
-    public get(path: string, parser: IResourceApiParser, requestOptions: RequestOptions): Observable<IResource[]> {
+    public get(path: string, parser: IResourceApiParser, refresh: boolean = false): Observable<IResource[]> {
         let cache: ResourceCache;
-        cache = this._getCache(path);
 
-        this._httpService.get(path, requestOptions)
-            .map(response => (<any[]>response).map(datum => parser(datum)))
-            .subscribe(data => cache.set(data));
+        if (!this._checkForCache(path) || refresh) {
+            cache = this._getCache(path);
+            cache.reset();
+
+            this._httpService.get(path)
+                .map(response => (<any[]>response).map(datum => parser(datum)))
+                .subscribe(data => cache.set(data));
+        }
+        else {
+            cache = this._getCache(path);
+        }
 
         return cache.getItems();
     }
 
-    public post(path: string, data: IResource, requestOptions: RequestOptions): Observable<number> {
+    public post(path: string, data: IResource, local: boolean = false): Observable<number> {
+        if (local && !this._checkForCache(path)) {
+            return;
+        }
+
         const cache: ResourceCache = this._getCache(path);
 
-        return this._httpService.post(path, data.exportToApi(), requestOptions)
-            .do(id => data.id = id)
-            .do(() => cache.add(data))
-            .map(() => data.id);
+        if (local) {
+            cache.add(data);
+
+            return Observable.of(data.id);
+        }
+        else {
+            return this._httpService.post(path, data.exportToApi())
+                .do(id => data.id = id)
+                .do(() => cache.add(data))
+                .map(() => data.id);
+        }
+
     }
 
-    public put(path: string, data: IResource, requestOptions: RequestOptions): Observable<void> {
+    public put(path: string, data: IResource, local: boolean = false): Observable<void> {
         const cache: ResourceCache = this._getCache(path);
 
-        return this._httpService.put(`${path}/${data.id}`, data.exportToApi(), requestOptions)
+        if (local) {
+            return Observable.of(cache.update(data));
+        }
+
+        return this._httpService.put(`${path}/${data.id}`, data.exportToApi())
             .map(response => cache.update(data));
     }
 
-    public delete(path: string, id: number, requestOptions: RequestOptions): Observable<void> {
+    public delete(path: string, id: number, local: boolean = false): Observable<void> {
         const cache: ResourceCache = this._getCache(path);
 
-        return this._httpService.delete(`${path}/${id}`, requestOptions)
+        if (local) {
+            return Observable.of(cache.delete(id));
+        }
+
+        return this._httpService.delete(`${path}/${id}`)
             .map($ => cache.delete(id));
     }
 
@@ -63,7 +89,7 @@ export class CacheService {
         return this._cacheMap.get(path);
     }
 
-    private checkForCache(path: string): boolean {
+    private _checkForCache(path: string): boolean {
         return this._cacheMap.has(path);
     }
 }

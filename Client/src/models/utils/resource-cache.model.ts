@@ -32,6 +32,10 @@ export class ResourceCache {
             .filter(data => !data.length || data.length > 0 && (<any>data[0]).sentinel === undefined);
     }
 
+    public hasItem(id: number): boolean {
+        return this._items.findIndex(i => i.item.id === id) > 0;
+    }
+
     /**
      * @method
      * @description
@@ -92,7 +96,7 @@ export class ResourceCache {
      *
      * @param {string|number} itemId The id of the item to delete.
      */
-    public delete(itemId: string | number): void {
+    public delete(itemId: number): void {
         const indexToDelete: number = this._items.findIndex(i => i.item.id === itemId);
 
         if (indexToDelete >= 0) {

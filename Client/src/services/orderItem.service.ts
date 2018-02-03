@@ -13,10 +13,10 @@ export class OrderItemService {
     ) { }
 
     public get(orderId: number): Observable<OrderItem[]> {
-        return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi, null);
+        return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi);
     }
 
     public add(item: OrderItem): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item, null);
+        return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item);
     }
 }

@@ -12,22 +12,25 @@ export class OrderService {
     ) { }
 
     public get(): Observable<Order[]> {
-        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders`, Order.importFromApi, null);
+        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders`, Order.importFromApi);
     }
 
     public getByDate(start: Date, end: Date): Observable<Order[]> {
-        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}`, Order.importFromApi, null);
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+
+        return <Observable<Order[]>>this._cacheService.get(`${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}`, Order.importFromApi);
     }
 
     public add(order: Order): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/orders`, order, null);
+        return this._cacheService.post(`${this._baseService.baseUrl}/orders`, order);
     }
 
     public update(id: number, order: Order): Observable<void> {
-        return this._cacheService.put(`${this._baseService.baseUrl}/orders/${id}`, order, null);
+        return this._cacheService.put(`${this._baseService.baseUrl}/orders/${id}`, order);
     }
 
     public delete(id: number): Observable<void> {
-        return this._cacheService.delete(`${this._baseService.baseUrl}/orders`, id, null);
+        return this._cacheService.delete(`${this._baseService.baseUrl}/orders`, id);
     }
 }

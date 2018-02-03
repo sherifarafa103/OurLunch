@@ -12,18 +12,18 @@ export class RestaurantService {
     ) { }
 
     public get(): Observable<Restaurant[]> {
-        return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi, null);
+        return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi);
     }
 
     public add(restaurant: Restaurant): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/restaurants`, restaurant, null);
+        return this._cacheService.post(`${this._baseService.baseUrl}/restaurants`, restaurant);
     }
 
     public update(id: number, restaurant: Restaurant): Observable<void> {
-        return this._cacheService.put(`${this._baseService.baseUrl}/restaurants`, restaurant, null);
+        return this._cacheService.put(`${this._baseService.baseUrl}/restaurants`, restaurant);
     }
 
     public delete(id: number): Observable<void> {
-        return this._cacheService.delete(`${this._baseService.baseUrl}/restaurants`, id, null);
+        return this._cacheService.delete(`${this._baseService.baseUrl}/restaurants`, id);
     }
 }

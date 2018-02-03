@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { BaseService } from '../services/base.service';
 import { HttpService } from '../services/utils/http.service';
+import { CacheService } from '../services/utils/cache.service';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
@@ -11,21 +12,22 @@ export class UserService {
     constructor(
         private _baseService: BaseService,
         private _httpService: HttpService,
+        private _cacheService: CacheService
     ) { }
 
     public get(): Observable<User[]> {
-        return <Observable<User[]>>this._httpService.get(`${this._baseService.baseUrl}/users`, null)
-            .map(data => data.map(d => User.importFromApi(d)));
+        return <Observable<User[]>>this._cacheService.get(`${this._baseService.baseUrl}/users`, User.importFromApi);
     }
 
     public signIn(alias: string): Observable<User> {
-        return this._httpService.get(`${this._baseService.baseUrl}/users/alias/${alias}`, null)
+        return this._httpService.get(`${this._baseService.baseUrl}/users/alias/${alias}`)
             .map(data => User.importFromApi(data))
-            .do(user => this.currentUser = user);
+            .do(user => this.currentUser = user)
+            .do(user => this._cacheService.post(`${this._baseService.baseUrl}/users`, user, true));
     }
 
     public add(user: User): Observable<number> {
-        return this._httpService.post(`${this._baseService.baseUrl}/users`, user, null)
+        return this._cacheService.post(`${this._baseService.baseUrl}/users`, user)
             .do(id => user.id = id)
             .do(() => this.currentUser = user);
     }

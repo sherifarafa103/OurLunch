@@ -12,7 +12,6 @@ import { CreateOrderPage } from '../pages/create-order/create-order.component';
 import { RestaurantPopover } from '../pages/create-order/restaurant-popover/restaurant-popover.component';
 import { OrdersPage } from '../pages/orders/orders.component';
 import { OrderPage } from '../pages/order/order.component';
-import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
 import { MainPage } from '../pages/main/main.component';
 
 // Services
@@ -25,6 +24,8 @@ import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
 import { OrderItemService } from '../services/orderItem.service';
 import { MealService } from '../services/meal.service';
+import { WebsocketService } from '../services/utils/websocket.service';
+import { RealTimeUpdaterService } from '../services/utils/real-time-updater.service';
 
 // Ionic components
 import { StatusBar } from '@ionic-native/status-bar';
@@ -37,7 +38,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         OrdersPage,
         SignInPage,
         CreateOrderPage,
-        MakeOrderItemPage,
         WelcomePage,
         MainPage,
         ActiveOrdersPage,
@@ -56,7 +56,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         OrdersPage,
         SignInPage,
         CreateOrderPage,
-        MakeOrderItemPage,
         WelcomePage,
         MainPage,
         ActiveOrdersPage,
@@ -74,7 +73,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         OrderService,
         OrderItemService,
         RestaurantService,
-        MealService
+        MealService,
+        WebsocketService,
+        RealTimeUpdaterService
     ]
 })
 export class AppModule { }

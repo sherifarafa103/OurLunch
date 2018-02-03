@@ -6,8 +6,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { OrdersPage } from '../pages/orders/orders.component';
 import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
 import { CreateOrderPage } from '../pages/create-order/create-order.component';
-import { MakeOrderItemPage } from '../pages/MakeOrderItem/MakeOrderItem';
 import { MainPage } from '../pages/main/main.component';
+
+import { RealTimeUpdaterService } from '../services/utils/real-time-updater.service';
 
 @Component({
     templateUrl: 'app.html'
@@ -18,7 +19,12 @@ export class MyApp {
     public rootPage: any = MainPage;
     public pages: Array<{ title: string, component: any }>;
 
-    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+    constructor(
+        private _updaterService: RealTimeUpdaterService,
+        public platform: Platform,
+        public statusBar: StatusBar,
+        public splashScreen: SplashScreen
+    ) {
         this.initializeApp();
 
         // used for an example of ngFor and navigation
@@ -27,7 +33,6 @@ export class MyApp {
             { title: 'Create Order', component: CreateOrderPage },
             { title: 'Active Orders', component: ActiveOrdersPage },
             { title: 'Orders History', component: OrdersPage },
-            { title: 'Make Order Item', component: MakeOrderItemPage }
         ];
     }
 

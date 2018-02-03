@@ -3,14 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using OurLunch.Models;
 using OurLunch.Data;
+using OurLunch.Interfaces;
+using OurLunch.WebSockets;
 
 namespace TodoApi.Controllers
 {
     [Route("api/restaurants")]
     public class RestaurantController : Controller
     {
+        private IWebSocketHandler _socketHandler;
+
+        public RestaurantController(IWebSocketHandler socketHandler)
+        {
+            _socketHandler = socketHandler;
+        }
+
         [HttpGet]
-        public IEnumerable<Restaurant> GetRestaurants() //retrieve from database
+        public IEnumerable<Restaurant> GetRestaurants()
         {
             using (var db = new OurLunchDatabase())
             {
@@ -19,7 +28,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetRestaurantById(int id)  //retrieve from database for a certain index
+        public IActionResult GetRestaurantById(int id)
         {
             Restaurant restaurant;
 
@@ -36,14 +45,23 @@ namespace TodoApi.Controllers
             return new ObjectResult(restaurant);
         }
 
+        [HttpGet("{id}/meals")]
+        public IEnumerable<Meal> GetMealsForRestaurant(int id)
+        {
+            using (var db = new OurLunchDatabase())
+            {
+                return db.MealRepository.GetMealsByRestaurantId(id);
+            }
+        }
 
         [HttpPost]
-        public IActionResult AddRestaurant([FromBody] Restaurant restaurant) //Insert to database
+        public IActionResult AddRestaurant([FromBody] Restaurant restaurant)
         {
             using (var db = new OurLunchDatabase())
             {
                 db.RestaurantRepository.AddRestaurant(restaurant);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "restaurants", Method = "post" });
             }
 
             return new ObjectResult(restaurant.RestaurantId);
@@ -57,6 +75,7 @@ namespace TodoApi.Controllers
             {
                 db.RestaurantRepository.UpdateRestaurant(restaurant);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "restaurants", Method = "put" });
             }
 
             return new NoContentResult();
@@ -77,19 +96,10 @@ namespace TodoApi.Controllers
 
                 db.RestaurantRepository.DeleteRestaurant(restaurant);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "restaurants", Method = "delete" });
             }
 
             return new NoContentResult();
         }
-
-        [HttpGet("{id}/meals")]
-        public IEnumerable<Meal> GetMealsForRestaurant(int id) //retrieve from database
-        {
-            using (var db = new OurLunchDatabase())
-            {
-                return db.MealRepository.GetMealsByRestaurantId(id);
-            }
-        }
-
     }
 }

@@ -3,15 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using OurLunch.Models;
 using OurLunch.Data;
+using OurLunch.Interfaces;
+using OurLunch.WebSockets;
 
 namespace TodoApi.Controllers
 {
     [Route("api/meals")]
     public class MealController : Controller
     {
-       
+        private IWebSocketHandler _socketHandler;
+
+        public MealController(IWebSocketHandler socketHandler)
+        {
+            _socketHandler = socketHandler;
+        }
+
         [HttpGet("{id}")]
-        public IActionResult GetMealById(int id)  //retrieve from database for a certain index
+        public IActionResult GetMealById(int id)
         {
             Meal meal;
 
@@ -30,12 +38,13 @@ namespace TodoApi.Controllers
 
 
         [HttpPost]
-        public IActionResult AddMeal([FromBody] Meal meal) //Insert to database
+        public IActionResult AddMeal([FromBody] Meal meal)
         {
             using (var db = new OurLunchDatabase())
             {
                 db.MealRepository.AddMeal(meal);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", meal.RestaurantId), Method = "post" });                
             }
 
             return new ObjectResult(meal.MealId);
@@ -49,6 +58,7 @@ namespace TodoApi.Controllers
             {
                 db.MealRepository.UpdateMeal(meal);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", meal.RestaurantId), Method = "put" });
             }
 
             return new NoContentResult();
@@ -61,6 +71,7 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 var meal = db.MealRepository.GetMealById(id);
+                var restaurantId = meal.RestaurantId;
 
                 if (meal == null)
                 {
@@ -69,6 +80,7 @@ namespace TodoApi.Controllers
 
                 db.MealRepository.DeleteMeal(meal);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", restaurantId), Method = "delete" });
             }
 
             return new NoContentResult();

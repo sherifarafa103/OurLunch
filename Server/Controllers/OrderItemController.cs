@@ -3,29 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using OurLunch.Models;
 using OurLunch.Data;
+using OurLunch.Interfaces;
+using OurLunch.WebSockets;
 
 namespace TodoApi.Controllers
 {
     [Route("api/orderItems")]
     public class OrderItemController : Controller
     {
-        [HttpGet]
-        public IEnumerable<OrderItem> GetAllOrdersItems() //retrieve from database
+        private IWebSocketHandler _socketHandler;
+
+        public OrderItemController(IWebSocketHandler socketHandler)
         {
-            using (var db = new OurLunchDatabase())
-            {
-                return db.OrderItemRepository.GetAllOrdersItems();
-            }
+            _socketHandler = socketHandler;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetOrderItemsByOrderId(int id)  //retrieve from database for a certain index
+        [HttpGet("{orderId}")]
+        public IActionResult GetOrderItemsByOrderId(int orderId)
         {
             List<OrderItem> orderItems;
 
             using (var db = new OurLunchDatabase())
             {
-                orderItems = db.OrderItemRepository.GetOrderItemsByOrderId(id);
+                orderItems = db.OrderItemRepository.GetOrderItemsByOrderId(orderId);
             }
 
             if (orderItems == null)
@@ -36,32 +36,14 @@ namespace TodoApi.Controllers
             return new ObjectResult(orderItems);
         }
 
-        [HttpGet("useritemsinorder/{id}")]
-        public IActionResult GetOrderItemsForOneUser(int userId, int orderId)  //retrieve from database for a certain index
-        {
-            OrderItem orderItem;
-
-            using (var db = new OurLunchDatabase())
-            {
-                orderItem = db.OrderItemRepository.GetOrderItemsForOneUser(userId, orderId);
-            }
-
-            if (orderItem == null)
-            {
-                return NotFound();
-            }
-
-            return new ObjectResult(orderItem);
-        }
-
-
         [HttpPost]
-        public IActionResult AddOrderItem([FromBody] OrderItem orderItem) //Insert to database
+        public IActionResult AddOrderItem([FromBody] OrderItem orderItem)
         {
             using (var db = new OurLunchDatabase())
             {
                 db.OrderItemRepository.AddOrderItem(orderItem);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "post" });                
             }
 
             return new ObjectResult(orderItem.OrderItemId);
@@ -75,6 +57,7 @@ namespace TodoApi.Controllers
             {
                 db.OrderItemRepository.UpdateOrderItem(orderItem);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "put" });                
             }
 
             return new NoContentResult();
@@ -95,6 +78,7 @@ namespace TodoApi.Controllers
 
                 db.OrderItemRepository.DeleteOrderItem(orderItem);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "delete" });
             }
 
             return new NoContentResult();

@@ -3,12 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using OurLunch.Models;
 using OurLunch.Data;
+using OurLunch.Interfaces;
+using OurLunch.WebSockets;
 
 namespace TodoApi.Controllers
 {
     [Route("api/users")]
     public class UserController : Controller
     {
+        private IWebSocketHandler _socketHandler;
+
+        public UserController(IWebSocketHandler socketHandler)
+        {
+            _socketHandler = socketHandler;
+        }
+
         [HttpGet]
         public IEnumerable<User> GetAll() //retrieve from database
         {
@@ -19,7 +28,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)  //retrieve from database for a certain index
+        public IActionResult GetById(int id)
         {
             User user;
 
@@ -54,20 +63,18 @@ namespace TodoApi.Controllers
             return new ObjectResult(user);
         }
 
-
-
         [HttpPost]
-        public IActionResult AddUser([FromBody] User user) //Insert to database
+        public IActionResult AddUser([FromBody] User user)
         {
             using (var db = new OurLunchDatabase())
             {
                 db.UserRepository.AddUser(user);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "post" });
             }
 
             return new ObjectResult(user.UserId);
         }
-
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
@@ -76,6 +83,7 @@ namespace TodoApi.Controllers
             {
                 db.UserRepository.UpdateUser(user);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "put" });
             }
 
             return new NoContentResult();
@@ -96,40 +104,10 @@ namespace TodoApi.Controllers
 
                 db.UserRepository.DeleteUser(user);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "delete" });
             }
 
             return new NoContentResult();
         }
-
-
-
-        /* importanttttttttttttttttttttt
-        [HttpGet("aliasSherif/{alias}")]
-        public IActionResult GetByAlias(string alias)
-        {
-
-        }
-        */
-
-
-
-        /*
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
-        {
-            using (var db = new OurLunchDatabase())
-            {
-                db.UserRepository.AddUser(user);
-            }
-
-            var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
-        }
-        */
-
     }
 }

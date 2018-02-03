@@ -4,14 +4,23 @@ using System.Linq;
 using OurLunch.Models;
 using OurLunch.Data;
 using System;
+using OurLunch.Interfaces;
+using OurLunch.WebSockets;
 
 namespace TodoApi.Controllers
 {
     [Route("api/orders")]
     public class OrderController : Controller
     {
+        private IWebSocketHandler _socketHandler;
+
+        public OrderController(IWebSocketHandler socketHandler)
+        {
+            _socketHandler = socketHandler;
+        }
+
         [HttpGet]
-        public IEnumerable<Order> GetAll() //retrieve from database
+        public IEnumerable<Order> GetAll()
         {
             using (var db = new OurLunchDatabase())
             {
@@ -20,7 +29,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetOrderById(int id)  //retrieve from database for a certain index
+        public IActionResult GetOrderById(int id)
         {
             Order order;
 
@@ -36,10 +45,9 @@ namespace TodoApi.Controllers
 
             return new ObjectResult(order);
         }
-      
-        
+
         [HttpGet("time/{start}/{end}")]
-        public IActionResult GetOrderByTime(DateTime start,DateTime end)
+        public IActionResult GetOrderByTime(DateTime start, DateTime end)
         {
             Order order;
 
@@ -55,22 +63,19 @@ namespace TodoApi.Controllers
 
             return new ObjectResult(order);
         }
-        
-
-
 
         [HttpPost]
-        public IActionResult AddOrder([FromBody] Order order) //Insert to database
+        public IActionResult AddOrder([FromBody] Order order)
         {
             using (var db = new OurLunchDatabase())
             {
                 db.OrderRepository.AddOrder(order);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "post" });                
             }
 
             return new ObjectResult(order.OrderId);
         }
-
 
         [HttpPut("{id}")]
         public IActionResult UpdateOrder(int id, [FromBody] Order order)
@@ -79,11 +84,11 @@ namespace TodoApi.Controllers
             {
                 db.OrderRepository.UpdateOrder(order);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "put" });                
             }
 
             return new NoContentResult();
         }
-
 
         [HttpDelete("{id}")]
         public IActionResult DeleteOrder(int id)
@@ -92,47 +97,18 @@ namespace TodoApi.Controllers
             {
                 var order = db.OrderRepository.GetOrderById(id);
 
-                if(order == null)
+                if (order == null)
                 {
                     return NotFound();
                 }
 
                 db.OrderRepository.DeleteOrder(order);
                 db.Save();
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "delete" });
+
             }
 
             return new NoContentResult();
         }
-
-
-
-        /* importanttttttttttttttttttttt
-        [HttpGet("aliasSherif/{alias}")]
-        public IActionResult GetByAlias(string alias)
-        {
-
-        }
-        */
-
-
-
-        /*
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
-        {
-            using (var db = new OurLunchDatabase())
-            {
-                db.UserRepository.AddUser(user);
-            }
-
-            var item = _context.TodoItems.FirstOrDefault(t => t.Id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return new ObjectResult(item);
-        }
-        */
-
     }
 }

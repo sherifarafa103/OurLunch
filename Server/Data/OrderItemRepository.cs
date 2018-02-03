@@ -11,11 +11,6 @@ namespace OurLunch.Data
     {
         public OrderItemRepository(OurLunchContext context) : base(context) { }
 
-        public virtual List<OrderItem> GetAllOrdersItems()
-        {
-            return Get().ToList();
-        }
-
         public virtual List<OrderItem> GetOrderItemsByOrderId(int orderId)
         {
             return Get(i=> i.OrderId == orderId).ToList();
@@ -24,11 +19,6 @@ namespace OurLunch.Data
         public virtual OrderItem GetOrderItemByOrderItemId(int orderItemId)
         {
             return Get(i => i.OrderItemId == orderItemId).SingleOrDefault();
-        }
-        //add order no
-        public virtual OrderItem GetOrderItemsForOneUser(int userId,int orderId)
-        {
-            return Get(i => i.UserId == userId && i.OrderId == orderId).SingleOrDefault();
         }
 
         public virtual void AddOrderItem(OrderItem item)

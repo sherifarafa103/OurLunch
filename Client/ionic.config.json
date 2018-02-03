@@ -1,8 +1,8 @@
 {
-  "name": "OurLunch",
-  "app_id": "",
-  "type": "ionic-angular",
-  "integrations": {
-    "cordova": {}
-  }
+    "name": "OurLunch",
+    "app_id": "",
+    "type": "ionic-angular",
+    "integrations": {
+        "cordova": {}
+    }
 }

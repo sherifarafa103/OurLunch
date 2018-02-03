@@ -5,8 +5,12 @@ import { ToastController } from 'ionic-angular';
 export class BaseService {
     constructor(private _toastController: ToastController) { }
 
+    public get serverOrigin(): string {
+        return 'localhost:55014';
+    }
+
     public get baseUrl(): string {
-        return 'http://localhost:55014/api';
+        return `http://${this.serverOrigin}/api`;
     }
 
     public showErrorToast(message: string): void {

@@ -71,7 +71,7 @@ namespace TodoApi.Controllers
             {
                 db.OrderRepository.AddOrder(order);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "post" });                
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "post", Data = order });                
             }
 
             return new ObjectResult(order.OrderId);
@@ -84,7 +84,7 @@ namespace TodoApi.Controllers
             {
                 db.OrderRepository.UpdateOrder(order);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "put" });                
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "put", Data = order });                
             }
 
             return new NoContentResult();
@@ -104,7 +104,7 @@ namespace TodoApi.Controllers
 
                 db.OrderRepository.DeleteOrder(order);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "delete" });
+                _socketHandler.SendToAll(new Notification { Path = "orders", Method = "delete", Data = order });
 
             }
 

@@ -43,7 +43,7 @@ namespace TodoApi.Controllers
             {
                 db.OrderItemRepository.AddOrderItem(orderItem);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "post" });                
+                _socketHandler.SendToAll(new Notification { Path = "orderItems", Method = "post", Data = orderItem });              
             }
 
             return new ObjectResult(orderItem.OrderItemId);
@@ -57,7 +57,7 @@ namespace TodoApi.Controllers
             {
                 db.OrderItemRepository.UpdateOrderItem(orderItem);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "put" });                
+                _socketHandler.SendToAll(new Notification { Path = "orderItems", Method = "put", Data = orderItem });                
             }
 
             return new NoContentResult();
@@ -78,7 +78,7 @@ namespace TodoApi.Controllers
 
                 db.OrderItemRepository.DeleteOrderItem(orderItem);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("orderItems:{0}", orderItem.OrderId), Method = "delete" });
+                _socketHandler.SendToAll(new Notification { Path = "orderItems", Method = "delete", Data = orderItem });
             }
 
             return new NoContentResult();

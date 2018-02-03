@@ -70,7 +70,7 @@ namespace TodoApi.Controllers
             {
                 db.UserRepository.AddUser(user);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "users", Method = "post" });
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "post", Data = user });
             }
 
             return new ObjectResult(user.UserId);
@@ -83,7 +83,7 @@ namespace TodoApi.Controllers
             {
                 db.UserRepository.UpdateUser(user);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "users", Method = "put" });
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "put", Data = user });
             }
 
             return new NoContentResult();
@@ -104,7 +104,7 @@ namespace TodoApi.Controllers
 
                 db.UserRepository.DeleteUser(user);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = "users", Method = "delete" });
+                _socketHandler.SendToAll(new Notification { Path = "users", Method = "delete", Data = user });
             }
 
             return new NoContentResult();

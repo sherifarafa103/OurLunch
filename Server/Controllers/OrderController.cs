@@ -49,19 +49,14 @@ namespace TodoApi.Controllers
         [HttpGet("time/{start}/{end}")]
         public IActionResult GetOrderByTime(DateTime start, DateTime end)
         {
-            Order order;
+            List<Order> orders;
 
             using (var db = new OurLunchDatabase())
             {
-                order = db.OrderRepository.GetOrderByTime(start, end);
+                orders = db.OrderRepository.GetOrdersByTime(start, end);
             }
 
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return new ObjectResult(order);
+            return new ObjectResult(orders);
         }
 
         [HttpPost]

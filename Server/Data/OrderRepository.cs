@@ -21,9 +21,9 @@ namespace OurLunch.Data
             return Get(o => o.OrderId == order_no).SingleOrDefault();
         }
         
-        public virtual Order GetOrderByTime(DateTime start, DateTime end)
+        public virtual List<Order> GetOrdersByTime(DateTime start, DateTime end)
         {
-            return Get(o => o.Time >= start && o.Time <= end).SingleOrDefault();
+            return Get(o => o.Time >= start && o.Time <= end).ToList();
         }
 
         public virtual void AddOrder(Order order)

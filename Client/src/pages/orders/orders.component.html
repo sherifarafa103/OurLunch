@@ -10,20 +10,24 @@
 <ion-content padding>
     <ion-item>
         <ion-label>From</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DDTHH:mmZ" [(ngModel)]="startFilter" (change)="onDateChange()"></ion-datetime>
+        <ion-datetime pickerFormat="YYYY-MM-DD hh:mm A" displayFormat="YYYY-MM-DD hh:mm A" [(ngModel)]="startFilter"></ion-datetime>
     </ion-item>
 
     <ion-item>
         <ion-label>To</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DDTHH:mmZ" [(ngModel)]="endFilter"></ion-datetime>
+        <ion-datetime pickerFormat="YYYY-MM-DD hh:mm A" displayFormat="YYYY-MM-DD hh:mm A" [(ngModel)]="endFilter"></ion-datetime>
     </ion-item>
+
+    <button ion-button margin-top block (click)="search()">Search</button>
 
     <ion-list margin-top>
         <ion-list-header>
             Orders in time span
         </ion-list-header>
 
-        <ion-item *ngFor="let order of orders | async" (click)="goToOrder()">
+        <h5 margin-left *ngIf="(orders | async)?.length === 0">No orders found in time span</h5>
+
+        <ion-item *ngFor="let order of orders | async | paginate:{ itemsPerPage: 10, currentPage: p }" (click)="goToOrder(order)">
             <ion-avatar item-start>
                 <div class="indicator" [class.active]="isActive(order)"></div>
             </ion-avatar>
@@ -32,7 +36,9 @@
 
             <h3>Issued by: {{ order.userId | userNameAsync:users | async }}</h3>
 
-            <p>{{ order.time | date:'medium' }}</p>
+            <p>{{ order.time | activeDate }}</p>
         </ion-item>
     </ion-list>
+
+    <pagination-controls text-center [autoHide]="true" (pageChange)="p = $event"></pagination-controls>
 </ion-content>

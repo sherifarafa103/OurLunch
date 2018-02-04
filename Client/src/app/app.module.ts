@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // Components
 import { MyApp } from './app.component';
@@ -17,6 +18,7 @@ import { MainPage } from '../pages/main/main.component';
 // Pipes
 import { UserNameAsyncPipe } from '../pages/orders/user-name-async.pipe';
 import { RestaurantNameAsyncPipe } from '../pages/orders/restaurant-name-async.pipe';
+import { ActiveDatePipe } from '../pages/orders/active-date.pipe';
 
 // Services
 import { HttpModule } from '@angular/http';
@@ -48,12 +50,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         OrderPage,
         RestaurantPopover,
         UserNameAsyncPipe,
-        RestaurantNameAsyncPipe
+        RestaurantNameAsyncPipe,
+        ActiveDatePipe
     ],
     imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
-        HttpModule
+        HttpModule,
+        NgxPaginationModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

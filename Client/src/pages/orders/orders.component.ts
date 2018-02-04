@@ -40,6 +40,10 @@ export class OrdersPage {
         this._navController.setRoot(OrderPage, { order: order });
     }
 
+    public isActive(order: Order): boolean {
+        return order.time > new Date();
+    }
+
     private _initState(): void {
         this._initDateFilters();
         this._getNewOrders();

@@ -18,21 +18,21 @@
         <ion-datetime displayFormat="YYYY-MM-DDTHH:mmZ" [(ngModel)]="endFilter"></ion-datetime>
     </ion-item>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Owner</th>
-                <th>Restaurant</th>
-                <th>Time</th>
-            </tr>
-        </thead>
+    <ion-list margin-top>
+        <ion-list-header>
+            Orders in time span
+        </ion-list-header>
 
-        <tbody>
-            <tr *ngFor="let order of orders | async" (click)="goToOrder()">
-                <td>{{ order.userId | userNameAsync:users | async }}</td>
-                <td>{{ order.restaurantId | restaurantNameAsync:restaurants | async }}</td>
-                <td>{{ order.time | date:'medium' }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <ion-item *ngFor="let order of orders | async" (click)="goToOrder()">
+            <ion-avatar item-start>
+                <div class="indicator" [class.active]="isActive(order)"></div>
+            </ion-avatar>
+
+            <h2>{{ order.restaurantId | restaurantNameAsync:restaurants | async }}</h2>
+
+            <h3>Issued by: {{ order.userId | userNameAsync:users | async }}</h3>
+
+            <p>{{ order.time | date:'medium' }}</p>
+        </ion-item>
+    </ion-list>
 </ion-content>

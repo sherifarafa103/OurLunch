@@ -48,7 +48,7 @@ export class SignUpPage {
 
         this._userService.add(user)
             .finally(() => loader.dismiss())
-            .subscribe(() => this._navController.push(MainPage), () => this._baseService.showErrorToast('A server error occurred!'));
+            .subscribe(() => this.dismiss(), () => this._baseService.showErrorToast('A server error occurred!'));
     }
 
     /**

@@ -43,7 +43,7 @@ export class SignInPage {
 
         this._userService.signIn(this.alias)
             .finally(() => loader.dismiss())
-            .subscribe(() => this._viewController.dismiss(), () => this._baseService.showErrorToast(
+            .subscribe(() => this.dismiss(), () => this._baseService.showErrorToast(
                 "User does not exist or a server error occurred.")
             );
     }

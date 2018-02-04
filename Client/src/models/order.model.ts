@@ -14,7 +14,7 @@ export class Order implements IResource {
     }
 
     static importFromApi(apiObject): Order {
-        return new Order(apiObject.orderId, apiObject.userId, apiObject.restaurantId, apiObject.time);
+        return new Order(apiObject.orderId, apiObject.userId, apiObject.restaurantId, new Date(apiObject.time));
     }
 
     public exportToApi(): Object {

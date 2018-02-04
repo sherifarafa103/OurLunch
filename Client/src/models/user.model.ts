@@ -14,7 +14,7 @@ export class User implements IResource {
     }
 
     static importFromApi(apiObject): User {
-        return new User(apiObject.userId, apiObject.firstName, apiObject.lastName, apiObject.alias);
+        return new User(apiObject.userId, apiObject.alias, apiObject.firstName, apiObject.lastName);
     }
 
     public exportToApi(): Object {

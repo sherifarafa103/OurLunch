@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Add new meal
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="cancel()">
+                <ion-icon name="md-close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label floating>Meal name</ion-label>
+        <ion-input [(ngModel)]="name" (keyup.enter)="save()"></ion-input>
+    </ion-item>
+
+    <button ion-button margin-top margin-left color="secondary" (click)="save()">Save</button>
+    <button ion-button margin-top (click)="cancel()">Cancel</button>
+</ion-content>

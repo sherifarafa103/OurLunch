@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Order settings
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="cancel()">
+                <ion-icon name="md-close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label floating>Tax value</ion-label>
+        <ion-input type="number" [(ngModel)]="order.tax" min="0" max="100"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Delivery Value</ion-label>
+        <ion-input type="number" [(ngModel)]="order.delivery"></ion-input>
+    </ion-item>
+
+    <button ion-button margin-top margin-left color="secondary" (click)="save()">Save</button>
+    <button ion-button margin-top (click)="cancel()">Cancel</button>
+</ion-content>

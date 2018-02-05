@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Add an item to the order
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="cancel()">
+                <ion-icon name="md-close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item>
+        <ion-label floating>Meal</ion-label>
+
+        <ion-select [(ngModel)]="mealId">
+            <ion-option *ngFor="let meal of meals | async" [value]="meal.id">{{ meal.name }}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <a margin [style.display]="'block'" (click)="openMealPopover($event)">Can't find your meal? Add it</a>
+
+    <ion-item>
+        <ion-label floating>Quantity</ion-label>
+        <ion-input type="number" [(ngModel)]="quantity"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Additional Notes</ion-label>
+        <ion-textarea [(ngModel)]="notes"></ion-textarea>
+    </ion-item>
+
+    <button ion-button block color="secondary" margin-top (click)="addItem()">Add item</button>
+</ion-content>

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Restaurant } from '../../models/restaurant.model';
+import { Restaurant } from '../models/restaurant.model';
 
 @Pipe({
     name: 'restaurantNameAsync'

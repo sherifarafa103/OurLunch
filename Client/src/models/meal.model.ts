@@ -17,8 +17,8 @@ export class Meal implements IResource {
 
     public exportToApi(): Object {
         return {
-            mealId: this.id,
-            restaurantId: this.restaurantId,
+            mealId: +this.id,
+            restaurantId: +this.restaurantId,
             name: this.name
         };
     }

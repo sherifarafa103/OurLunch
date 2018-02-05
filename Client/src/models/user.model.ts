@@ -19,7 +19,7 @@ export class User implements IResource {
 
     public exportToApi(): Object {
         return {
-            userId: this.id,
+            userId: +this.id,
             firstName: this.firstName,
             lastName: this.lastName,
             alias: this.alias

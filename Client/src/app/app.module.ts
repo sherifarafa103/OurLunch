@@ -14,11 +14,15 @@ import { RestaurantPopover } from '../pages/create-order/restaurant-popover/rest
 import { OrdersPage } from '../pages/orders/orders.component';
 import { OrderPage } from '../pages/order/order.component';
 import { MainPage } from '../pages/main/main.component';
+import { MealPopover } from '../pages/order/meal-popover/meal-popover.component';
+import { ItemPopover } from '../pages/order/item-popover/item-popover.component';
+import { SettingsPopover } from '../pages/order/settings-popover/settings-popover.component';
 
 // Pipes
-import { UserNameAsyncPipe } from '../pages/orders/user-name-async.pipe';
-import { RestaurantNameAsyncPipe } from '../pages/orders/restaurant-name-async.pipe';
-import { ActiveDatePipe } from '../pages/orders/active-date.pipe';
+import { UserNameAsyncPipe } from '../pipes/user-name-async.pipe';
+import { RestaurantNameAsyncPipe } from '../pipes/restaurant-name-async.pipe';
+import { MealNameAsyncPipe } from '../pipes/meal-name-async.pipe';
+import { ActiveDatePipe } from '../pipes/active-date.pipe';
 
 // Services
 import { HttpModule } from '@angular/http';
@@ -51,7 +55,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         RestaurantPopover,
         UserNameAsyncPipe,
         RestaurantNameAsyncPipe,
-        ActiveDatePipe
+        ActiveDatePipe,
+        MealPopover,
+        ItemPopover,
+        MealNameAsyncPipe,
+        SettingsPopover
     ],
     imports: [
         BrowserModule,
@@ -70,7 +78,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
         MainPage,
         ActiveOrdersPage,
         OrderPage,
-        RestaurantPopover
+        RestaurantPopover,
+        MealPopover,
+        ItemPopover,
+        SettingsPopover
     ],
     providers: [
         StatusBar,

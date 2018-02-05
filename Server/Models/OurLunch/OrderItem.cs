@@ -12,6 +12,10 @@
 
         public float Price { get; set; }
 
+        public float Quantity { get; set; }
+
+        public string Notes { get; set; }
+
         public virtual Order Order { get; set; }
 
         public virtual Meal Meal { get; set; }

@@ -15,6 +15,10 @@ namespace OurLunch.Models
 
         public DateTime Time { get; set; }
 
+        public float Tax { get; set; }
+
+        public float Delivery { get; set; }
+
         public virtual User User { get; set; }
 
         public virtual Restaurant Restaurant { get; set; }

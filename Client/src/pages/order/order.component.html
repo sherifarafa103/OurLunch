@@ -8,45 +8,33 @@
 </ion-header>
 
 <ion-content padding>
-    <h5>Created by: {{ (user | async)?.firstName + ' ' + (user | async)?.lastName }}</h5>
-    <h5>Will be ordered in: {{ time | async }} minutes</h5>
+    <h6>
+        Owner: {{ (user | async)?.firstName + ' ' + (user | async)?.lastName }}
+        <span float-right>{{ time | async }}</span>
+    </h6>
+    <hr>
 
-    <ion-card *ngFor="let item of orderItems">
+    <button ion-button block margin-top color="default" (click)="openSettingsModal($event)">Order settings</button>
+    <button ion-button block color="secondary" (click)="openItemModal($event)">Add new item</button>
+
+    <ion-card *ngFor="let userItem of userItems | async" margin-top>
         <ion-card-header>
-            <!-- {{  }} -->
+            {{ userItem.userId | userNameAsync:users | async }}
+            <span float-right>{{ calculateTotal(userItem) }} L.E</span>
         </ion-card-header>
 
         <ion-list>
-            <button ion-item>
-                <ion-icon name="cart" item-start></ion-icon>
-                Shopping
-            </button>
+            <ion-list-header>
+                Order items
+            </ion-list-header>
 
-            <button ion-item>
-                <ion-icon name="medical" item-start></ion-icon>
-                Hospital
-            </button>
-
-            <button ion-item>
-                <ion-icon name="cafe" item-start></ion-icon>
-                Cafe
-            </button>
-
-            <button ion-item>
-                <ion-icon name="paw" item-start></ion-icon>
-                Dog Park
-            </button>
-
-            <button ion-item>
-                <ion-icon name="beer" item-start></ion-icon>
-                Pub
-            </button>
-
-            <button ion-item>
-                <ion-icon name="planet" item-start></ion-icon>
-                Space
-            </button>
-
+            <ion-item *ngFor="let item of userItem.orderItems">
+                <h3>
+                    {{ item.quantity }}x {{ item.mealId | mealNameAsync:meals | async }}
+                    <span float-right>{{ item.quantity * item.price }} L.E</span>
+                </h3>
+                <p>{{ item.notes }}</p>
+            </ion-item>
         </ion-list>
     </ion-card>
 </ion-content>

@@ -9,7 +9,9 @@
 
 <ion-content padding>
     <ion-list margin-top>
-        <h5 margin-left *ngIf="(orders | async)?.length === 0">No currently active orders</h5>
+        <ion-item *ngIf="(orders | async)?.length === 0">
+            <h5>No currently active orders</h5>
+        </ion-item>
 
         <ion-item *ngFor="let order of orders | async | paginate:{ itemsPerPage: 10, currentPage: p }" (click)="goToOrder(order)">
             <ion-avatar item-start>

@@ -24,7 +24,7 @@
 
     <ion-item>
         <ion-label floating>Last Name</ion-label>
-        <ion-input type="text" [(ngModel)]="lastName"></ion-input>
+        <ion-input type="text" [(ngModel)]="lastName" (keyup.enter)="signUp()"></ion-input>
     </ion-item>
 
     <ion-list padding-left padding-top>

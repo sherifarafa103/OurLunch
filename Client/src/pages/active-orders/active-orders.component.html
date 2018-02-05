@@ -8,18 +8,21 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
-        <ion-card-header>
-        </ion-card-header>
+    <ion-list margin-top>
+        <h5 margin-left *ngIf="(orders | async)?.length === 0">No currently active orders</h5>
 
-        <ion-card-content>
-            <div class="row">
-                <div class="col">Meal name</div>
-                <div class="col">Restaurant</div>
-                <div class="col">Time</div>
-                <div class="col">Owner</div>
-                <div class="col">User</div>
-            </div>
-        </ion-card-content>
-    </ion-card>
+        <ion-item *ngFor="let order of orders | async | paginate:{ itemsPerPage: 10, currentPage: p }" (click)="goToOrder(order)">
+            <ion-avatar item-start>
+                <div class="indicator"></div>
+            </ion-avatar>
+
+            <h2>{{ order.restaurantId | restaurantNameAsync:restaurants | async }}</h2>
+
+            <h3>Issued by: {{ order.userId | userNameAsync:users | async }}</h3>
+
+            <p>{{ order.time | activeDate }}</p>
+        </ion-item>
+    </ion-list>
+
+    <pagination-controls text-center [autoHide]="true" (pageChange)="p = $event"></pagination-controls>
 </ion-content>

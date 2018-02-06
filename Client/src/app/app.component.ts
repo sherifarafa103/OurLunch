@@ -7,6 +7,7 @@ import { CreateOrderPage } from '../pages/create-order/create-order.component';
 import { MainPage } from '../pages/main/main.component';
 import { OrdersPage } from '../pages/orders/orders.component';
 import { RealTimeUpdaterService } from '../services/utils/real-time-updater.service';
+import { AboutPage } from '../pages/about/about.component';
 
 @Component({
     templateUrl: 'app.html'
@@ -28,9 +29,9 @@ export class MyApp {
         // Used for an example of ngFor and navigation
         this.pages = [
             { title: 'Home', component: MainPage },
-            { title: 'Create Order', component: CreateOrderPage },
             { title: 'Active Orders', component: ActiveOrdersPage },
             { title: 'Orders History', component: OrdersPage },
+            { title: 'About', component: AboutPage }
         ];
     }
 

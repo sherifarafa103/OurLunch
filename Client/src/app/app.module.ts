@@ -6,6 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 // Components
 import { MyApp } from './app.component';
 import { WelcomePage } from '../pages/welcome/welcome.component';
+import { AboutPage } from '../pages/about/about.component';
 import { SignUpPage } from '../pages/sign-up/sign-up.component';
 import { SignInPage } from '../pages/sign-in/sign-in.component';
 import { ActiveOrdersPage } from '../pages/active-orders/active-orders.component';
@@ -44,6 +45,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @NgModule({
     declarations: [
         MyApp,
+        AboutPage,
         SignUpPage,
         OrdersPage,
         SignInPage,
@@ -70,6 +72,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
+        AboutPage,
         SignUpPage,
         OrdersPage,
         SignInPage,

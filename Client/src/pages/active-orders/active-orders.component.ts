@@ -53,7 +53,7 @@ export class ActiveOrdersPage {
 
     private _getNewOrders(): void {
         const loader = this._loadingController.create({ content: "Loading Orders" });
-        this.orders = this._orderService.getActiveOrders()
+        this.orders = this._orderService.getActiveOrders(true)
             .map(orders => orders.sort((a, b) => a.time > b.time ? 1 : -1))
             .finally(() => loader.dismiss())
             .share();

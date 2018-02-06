@@ -46,14 +46,20 @@ export class CacheService {
         const cache: ResourceCache = this._getCache(path);
 
         if (local) {
-            cache.add(data);
+            if (!cache.hasItem(data.id)) {
+                cache.add(data);
+            }
 
             return Observable.of(data.id);
         }
         else {
             return this._httpService.post(path, data.exportToApi())
                 .do(id => data.id = id)
-                .do(() => cache.add(data))
+                .do(() => {
+                    if (!cache.hasItem(data.id)) {
+                        cache.add(data);
+                    }
+                })
                 .map(() => data.id);
         }
 

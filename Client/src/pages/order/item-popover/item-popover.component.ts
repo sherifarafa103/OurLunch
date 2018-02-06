@@ -28,6 +28,7 @@ export class ItemPopover {
     public price: number = null;
     public mealId: number = null;
     public orderOwnerId: number = null;
+    public orderItemOwnerId: number = null;
 
     public isEdit: boolean;
     public meals: Observable<Meal[]>;
@@ -81,10 +82,19 @@ export class ItemPopover {
     }
 
     public addItem(): void {
-        this._validate();
-        const newItem: OrderItem = new OrderItem(this.itemId, this.orderId, this._userService.currentUser.id, this.mealId, this.price, +this.quantity, this.notes);
+        if (this._validate()) {
+            const newItem: OrderItem = new OrderItem(
+                this.itemId,
+                this.orderId,
+                this.orderItemOwnerId ? this.orderItemOwnerId : this._userService.currentUser.id,
+                this.mealId,
+                this.price,
+                +this.quantity,
+                this.notes
+            );
 
-        this._viewController.dismiss(newItem);
+            this._viewController.dismiss(newItem);
+        }
     }
 
     private _validate(): boolean {
@@ -106,6 +116,7 @@ export class ItemPopover {
         this.itemId = this._navParams.get('id');
         this.orderId = this._navParams.get('orderId');
         this.orderOwnerId = this._navParams.get('orderOwnerId');
+        this.orderItemOwnerId = this._navParams.get('orderItemOwnerId');
         this.restaurantId = this._navParams.get('restaurantId');
         this.mealId = this._navParams.get('mealId');
         this.quantity = this._navParams.get('quantity');

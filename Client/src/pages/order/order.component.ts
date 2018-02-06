@@ -82,6 +82,7 @@ export class OrderPage {
             const modal: Modal = this._modalController.create(ItemPopover, {
                 isEdit: true,
                 id: item.id,
+                orderItemOwnerId: item.userId,
                 orderOwnerId: this.order.userId,
                 restaurantId: this.order.restaurantId,
                 orderId: this.order.id,

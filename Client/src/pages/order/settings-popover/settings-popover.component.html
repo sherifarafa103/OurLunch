@@ -19,7 +19,7 @@
 
     <ion-item>
         <ion-label floating>Delivery Value</ion-label>
-        <ion-input type="number" [(ngModel)]="order.delivery"></ion-input>
+        <ion-input type="number" [(ngModel)]="order.delivery" min="0"></ion-input>
     </ion-item>
 
     <button ion-button margin-top margin-left color="secondary" (click)="save()">Save</button>

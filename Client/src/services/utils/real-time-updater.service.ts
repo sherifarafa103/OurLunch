@@ -54,13 +54,13 @@ export class RealTimeUpdaterService {
     private _handleCall(message: INotification, service: any, parser: IResourceApiParser): void {
         switch (message.method) {
             case 'post':
-                service.add.bind(service, parser(message), true);
+                service.add.call(service, parser(message.data), true);
                 break;
             case 'put':
-                service.update.bind(service, parser(message), true);
+                service.update.call(service, parser(message.data), true);
                 break;
             case 'delete':
-                service.delete.bind(service, parser(message), true);
+                service.delete.call(service, parser(message.data), true);
                 break;
             default:
                 break;

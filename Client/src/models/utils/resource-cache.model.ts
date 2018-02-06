@@ -33,7 +33,7 @@ export class ResourceCache {
     }
 
     public hasItem(id: number): boolean {
-        return this._items.findIndex(i => i.item.id === id) > 0;
+        return this._items.findIndex(i => i.item.id === id) >= 0;
     }
 
     /**

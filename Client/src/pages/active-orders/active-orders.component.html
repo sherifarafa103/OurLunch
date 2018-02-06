@@ -15,7 +15,7 @@
 
         <ion-item *ngFor="let order of orders | async | paginate:{ itemsPerPage: 10, currentPage: p }" (click)="goToOrder(order)">
             <ion-avatar item-start>
-                <div class="indicator"></div>
+                <div class="active-indicator"></div>
             </ion-avatar>
 
             <h2>{{ order.restaurantId | restaurantNameAsync:restaurants | async }}</h2>

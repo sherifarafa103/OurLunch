@@ -21,6 +21,7 @@ export class OrderItemService {
         }
 
         return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item)
+            .do(id => item.id)
             .do(() => this._cacheService.post(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true));
     }
 

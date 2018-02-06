@@ -31,16 +31,16 @@ export class OrderService {
             .map(data => data.map(d => Order.importFromApi(d)));
     }
 
-    public add(order: Order): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/orders`, order);
+    public add(order: Order, local: boolean = false): Observable<number> {
+        return this._cacheService.post(`${this._baseService.baseUrl}/orders`, order, local);
     }
 
-    public update(id: number, order: Order): Observable<void> {
-        return this._cacheService.put(`${this._baseService.baseUrl}/orders`, order);
+    public update(order: Order, local: boolean = false): Observable<void> {
+        return this._cacheService.put(`${this._baseService.baseUrl}/orders`, order, local);
     }
 
-    public delete(id: number): Observable<void> {
-        return this._cacheService.delete(`${this._baseService.baseUrl}/orders`, id);
+    public delete(order: Order, local: boolean = false): Observable<void> {
+        return this._cacheService.delete(`${this._baseService.baseUrl}/orders`, order.id, local);
     }
 
     private _toLocalTimezone(date: Date): string {

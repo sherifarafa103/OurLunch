@@ -15,15 +15,15 @@ export class RestaurantService {
         return <Observable<Restaurant[]>>this._cacheService.get(`${this._baseService.baseUrl}/restaurants`, Restaurant.importFromApi, refresh);
     }
 
-    public add(restaurant: Restaurant): Observable<number> {
-        return this._cacheService.post(`${this._baseService.baseUrl}/restaurants`, restaurant);
+    public add(restaurant: Restaurant, local: boolean = false): Observable<number> {
+        return this._cacheService.post(`${this._baseService.baseUrl}/restaurants`, restaurant, local);
     }
 
-    public update(id: number, restaurant: Restaurant): Observable<void> {
-        return this._cacheService.put(`${this._baseService.baseUrl}/restaurants`, restaurant);
+    public update(restaurant: Restaurant, local: boolean = false): Observable<void> {
+        return this._cacheService.put(`${this._baseService.baseUrl}/restaurants`, restaurant, local);
     }
 
-    public delete(id: number): Observable<void> {
-        return this._cacheService.delete(`${this._baseService.baseUrl}/restaurants`, id);
+    public delete(restaurant: Restaurant, local: boolean = false): Observable<void> {
+        return this._cacheService.delete(`${this._baseService.baseUrl}/restaurants`, restaurant.id, local);
     }
 }

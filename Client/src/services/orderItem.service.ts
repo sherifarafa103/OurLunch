@@ -15,17 +15,29 @@ export class OrderItemService {
         return <Observable<OrderItem[]>>this._cacheService.get(`${this._baseService.baseUrl}/orderItems/${orderId}`, OrderItem.importFromApi, refresh);
     }
 
-    public add(item: OrderItem): Observable<number> {
+    public add(item: OrderItem, local: boolean = false): Observable<number> {
+        if (local) {
+            return this._cacheService.post(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true);
+        }
+
         return this._cacheService.post(`${this._baseService.baseUrl}/orderItems`, item)
             .do(() => this._cacheService.post(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true));
     }
 
-    public update(item: OrderItem): Observable<void> {
+    public update(item: OrderItem, local: boolean = false): Observable<void> {
+        if (local) {
+            return this._cacheService.put(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true);
+        }
+
         return this._cacheService.put(`${this._baseService.baseUrl}/orderItems`, item)
             .do(() => this._cacheService.put(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item, true));
     }
 
-    public delete(item: OrderItem): Observable<void> {
+    public delete(item: OrderItem, local: boolean = false): Observable<void> {
+        if (local) {
+            return this._cacheService.delete(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item.id, true);
+        }
+
         return this._cacheService.delete(`${this._baseService.baseUrl}/orderItems`, item.id)
             .do(() => this._cacheService.delete(`${this._baseService.baseUrl}/orderItems/${item.orderId}`, item.id, true));
     }

@@ -6,7 +6,7 @@ export class BaseService {
     constructor(private _toastController: ToastController) { }
 
     public get serverOrigin(): string {
-        return 'localhost:55014';
+        return '5688e7d1.ngrok.io';
     }
 
     public get baseUrl(): string {

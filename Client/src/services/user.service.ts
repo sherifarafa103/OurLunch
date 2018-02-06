@@ -26,7 +26,11 @@ export class UserService {
             .do(user => this._cacheService.post(`${this._baseService.baseUrl}/users`, user, true));
     }
 
-    public add(user: User): Observable<number> {
+    public add(user: User, local: boolean = false): Observable<number> {
+        if (local) {
+            return this._cacheService.post(`${this._baseService.baseUrl}/users`, user, local);
+        }
+
         return this._cacheService.post(`${this._baseService.baseUrl}/users`, user)
             .do(id => user.id = id)
             .do(() => this.currentUser = user);

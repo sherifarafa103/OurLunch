@@ -28,7 +28,7 @@ export class ItemPopover {
     public quantity: number = null;
     public price: number = null;
     public mealId: number = null;
-    public userId: number = null;
+    public orderOwnerId: number = null;
 
     public isEdit: boolean;
     public meals: Observable<Meal[]>;
@@ -106,7 +106,7 @@ export class ItemPopover {
         this.isEdit = this._navParams.get('isEdit');
         this.itemId = this._navParams.get('id');
         this.orderId = this._navParams.get('orderId');
-        this.userId = this._navParams.get('userId');
+        this.orderOwnerId = this._navParams.get('orderOwnerId');
         this.restaurantId = this._navParams.get('restaurantId');
         this.mealId = this._navParams.get('mealId');
         this.quantity = this._navParams.get('quantity');

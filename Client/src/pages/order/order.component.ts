@@ -71,7 +71,7 @@ export class OrderPage {
 
         modal.onDidDismiss(order => {
             if (order) {
-                this._orderService.update(order.id, order)
+                this._orderService.update(order)
                     .subscribe(() => this.order = order);
             }
         });

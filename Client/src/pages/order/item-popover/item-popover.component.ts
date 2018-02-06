@@ -9,7 +9,6 @@ import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Observable } from 'rxjs/Rx';
 import { Meal } from '../../../models/meal.model';
 import { OrderItem } from '../../../models/orderItem.model';
-import { Restaurant } from '../../../models/restaurant.model';
 import { BaseService } from '../../../services/base.service';
 import { MealService } from '../../../services/meal.service';
 import { UserService } from '../../../services/user.service';

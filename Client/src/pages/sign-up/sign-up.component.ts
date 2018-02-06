@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, LoadingController } from 'ionic-angular';
+import { ViewController, LoadingController } from 'ionic-angular';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { MainPage } from '../main/main.component';
 import { BaseService } from '../../services/base.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class SignUpPage {
 
     constructor(
         private _viewController: ViewController,
-        private _navController: NavController,
         private _loadingController: LoadingController,
         private _baseService: BaseService,
         private _userService: UserService

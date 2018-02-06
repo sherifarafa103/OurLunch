@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ViewController, LoadingController } from 'ionic-angular';
 import { UserService } from '../../services/user.service';
 import { BaseService } from '../../services/base.service';
-import { MainPage } from '../main/main.component';
 
 @Component({
     selector: 'sign-in',

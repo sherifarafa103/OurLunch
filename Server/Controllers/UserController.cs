@@ -68,8 +68,17 @@ namespace TodoApi.Controllers
         {
             using (var db = new OurLunchDatabase())
             {
+                var existingUser = db.UserRepository.GetUserByAlias(user.Alias);
+                System.Console.WriteLine(user.Alias);
+
+                if(existingUser != null)
+                {
+                    return BadRequest();
+                }
+
                 db.UserRepository.AddUser(user);
                 db.Save();
+                
                 _socketHandler.SendToAll(new Notification { Path = "users", Method = "post", Data = user });
             }
 

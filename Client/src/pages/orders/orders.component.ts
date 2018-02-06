@@ -9,6 +9,7 @@ import { OrderService } from '../../services/order.service';
 import { RestaurantService } from '../../services/restaurant.service';
 import { UserService } from '../../services/user.service';
 import { OrderPage } from '../order/order.component';
+import { CreateOrderPage } from '../create-order/create-order.component';
 
 @Component({
     selector: 'orders-page',
@@ -38,6 +39,10 @@ export class OrdersPage {
         this._getNewOrders();
     }
 
+    public createOrder(): void {
+        this._navController.push(CreateOrderPage, null, { animate: true });
+    }
+
     public goToOrder(order: Order): void {
         this._navController.push(OrderPage, { order: order });
     }
@@ -49,7 +54,7 @@ export class OrdersPage {
     private _initState(): void {
         this._initDateFilters();
         this._getNewOrders();
-        this.users = this._userService.get();
+        this.users = this._userService.get(true);
         this.restaurants = this._restaurantService.get();
     }
 

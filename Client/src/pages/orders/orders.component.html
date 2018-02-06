@@ -41,4 +41,10 @@
     </ion-list>
 
     <pagination-controls text-center [autoHide]="true" (pageChange)="p = $event"></pagination-controls>
+
+    <ion-fab right bottom>
+        <button ion-fab color="primary" (click)="createOrder()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-content>

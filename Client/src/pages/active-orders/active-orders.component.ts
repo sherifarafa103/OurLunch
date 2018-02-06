@@ -9,6 +9,7 @@ import { OrderService } from '../../services/order.service';
 import { RestaurantService } from '../../services/restaurant.service';
 import { UserService } from '../../services/user.service';
 import { OrderPage } from '../order/order.component';
+import { CreateOrderPage } from '../create-order/create-order.component';
 
 @Component({
     selector: 'active-orders-page',
@@ -30,6 +31,10 @@ export class ActiveOrdersPage {
 
     public ngOnInit(): void {
         this._initState();
+    }
+
+    public createOrder(): void {
+        this._navController.push(CreateOrderPage, null, { animate: true });
     }
 
     public search(): void {

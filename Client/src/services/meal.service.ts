@@ -23,7 +23,7 @@ export class MealService {
         }
 
         return this._httpService.post(`${this._baseService.baseUrl}/meals`, meal)
-            .do(id => meal.id)
+            .do(id => meal.id = id)
             .do(() => this._cacheService.post(`${this._baseService.baseUrl}/restaurants/${meal.restaurantId}/meals`, meal, true));
     }
 

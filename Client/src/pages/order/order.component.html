@@ -5,7 +5,7 @@
         </button>
         <ion-title>
             {{ (restaurant | async)?.name }} {{ showAdd() ? '(Open)' : '(Closed)' }}
-            <span float-right>{{ grandTotal((userItems | async)) }} L.E</span>
+            <small class="adjust-price" float-right>{{ grandTotal((userItems | async)) }} L.E</small>
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -13,7 +13,7 @@
 <ion-content padding>
     <h6>
         Owner: {{ (user | async)?.firstName + ' ' + (user | async)?.lastName }}
-        <span float-right>{{ time | async }}</span>
+        <small class="adjust-date" float-right>{{ time | async }}</small>
     </h6>
     <hr>
 

@@ -3,7 +3,10 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>{{ (restaurant | async)?.name }} {{ showAdd() ? '(Open)' : '(Closed)' }}</ion-title>
+        <ion-title>
+            {{ (restaurant | async)?.name }} {{ showAdd() ? '(Open)' : '(Closed)' }}
+            <span float-right>{{ grandTotal((userItems | async)) }} L.E</span>
+        </ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -20,7 +23,7 @@
     <ion-card *ngFor="let userItem of userItems | async" margin-top>
         <ion-card-header>
             {{ userItem.userId | userNameAsync:users | async }}
-            <span float-right>{{ calculateTotal(userItem) }} L.E</span>
+            <span float-right>{{ calculateTotal(userItem, (userItems | async).length) }} L.E</span>
         </ion-card-header>
 
         <ion-list>

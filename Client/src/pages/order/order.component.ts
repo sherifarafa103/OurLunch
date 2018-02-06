@@ -126,9 +126,13 @@ export class OrderPage {
         });
     }
 
-    public calculateTotal(userItem: IUserOrderItems): number {
+    public calculateTotal(userItem: IUserOrderItems, userCount: number): number {
         const itemsPrices: number = userItem.orderItems.reduce((acc, val) => acc + val.price * val.quantity, 0);
-        return itemsPrices + (itemsPrices * this.order.tax) / 100;
+        return itemsPrices + ((itemsPrices * this.order.tax) / 100) + this.order.delivery / userCount;
+    }
+
+    public grandTotal(userItems: IUserOrderItems[]): number {
+        return userItems ? userItems.reduce((acc, val) => acc + this.calculateTotal(val, userItems.length), 0) : 0;
     }
 
     private _initState(): void {

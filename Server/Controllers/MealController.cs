@@ -43,7 +43,7 @@ namespace TodoApi.Controllers
             {
                 db.MealRepository.AddMeal(meal);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", meal.RestaurantId), Method = "post", Data = meal });                
+                _socketHandler.SendToAll(new Notification { Path = "meals", Method = "post", Data = meal });
             }
 
             return new ObjectResult(meal.MealId);
@@ -56,7 +56,7 @@ namespace TodoApi.Controllers
             {
                 db.MealRepository.UpdateMeal(meal);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", meal.RestaurantId), Method = "put", Data = meal });
+                _socketHandler.SendToAll(new Notification { Path = "meals", Method = "put", Data = meal });
             }
 
             return new NoContentResult();
@@ -77,7 +77,7 @@ namespace TodoApi.Controllers
 
                 db.MealRepository.DeleteMeal(meal);
                 db.Save();
-                _socketHandler.SendToAll(new Notification { Path = string.Format("meals:{0}", restaurantId), Method = "delete", Data = meal });
+                _socketHandler.SendToAll(new Notification { Path = "meals", Method = "delete", Data = meal });
             }
 
             return new NoContentResult();

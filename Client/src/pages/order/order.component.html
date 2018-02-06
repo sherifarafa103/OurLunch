@@ -3,7 +3,7 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>{{ (restaurant | async)?.name }} order details</ion-title>
+        <ion-title>{{ (restaurant | async)?.name }} {{ showAdd() ? '(Open)' : '(Closed)' }}</ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -14,8 +14,8 @@
     </h6>
     <hr>
 
-    <button ion-button block margin-top color="default" (click)="openSettingsModal($event)">Order settings</button>
-    <button ion-button block color="secondary" (click)="openItemModal($event)">Add new item</button>
+    <button ion-button block margin-top color="default" *ngIf="(user | async)?.id === currentUser?.id" (click)="openSettingsModal($event)">Order settings</button>
+    <button ion-button block color="secondary" *ngIf="showAdd()" (click)="openItemModal($event)">Add new item</button>
 
     <ion-card *ngFor="let userItem of userItems | async" margin-top>
         <ion-card-header>
@@ -28,7 +28,7 @@
                 Order items
             </ion-list-header>
 
-            <ion-item *ngFor="let item of userItem.orderItems">
+            <ion-item *ngFor="let item of userItem.orderItems" (click)="goToItem(item, $event)">
                 <h3>
                     {{ item.quantity }}x {{ item.mealId | mealNameAsync:meals | async }}
                     <span float-right>{{ item.quantity * item.price }} L.E</span>

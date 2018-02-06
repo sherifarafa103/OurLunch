@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>
-            Add an item to the order
+            {{ isEdit ? 'Update item' : 'Add item' }}
         </ion-title>
         <ion-buttons start>
             <button ion-button (click)="cancel()">
@@ -27,10 +27,16 @@
         <ion-input type="number" [(ngModel)]="quantity"></ion-input>
     </ion-item>
 
+    <ion-item *ngIf="currentUser.id === userId">
+        <ion-label floating>Price</ion-label>
+        <ion-input type="number" [(ngModel)]="price"></ion-input>
+    </ion-item>
+
     <ion-item>
         <ion-label floating>Additional Notes</ion-label>
         <ion-textarea [(ngModel)]="notes"></ion-textarea>
     </ion-item>
 
-    <button ion-button block color="secondary" margin-top (click)="addItem()">Add item</button>
+    <button ion-button block color="secondary" margin-top (click)="addItem()">{{ isEdit ? 'Update item' : 'Add item' }}</button>
+    <button ion-button block color="danger" margin-top *ngIf="isEdit" (click)="deleteItem()">Delete Item</button>
 </ion-content>

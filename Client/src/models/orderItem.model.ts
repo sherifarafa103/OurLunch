@@ -10,6 +10,7 @@ export class OrderItem implements IResource {
     notes: string;
 
     constructor(id: number, orderId: number, userId: number, mealId: number, price: number = 0, quantity: number = 0, notes: string = '') {
+        this.id = id;
         this.orderId = orderId;
         this.userId = userId;
         this.mealId = mealId;

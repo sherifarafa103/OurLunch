@@ -30,8 +30,7 @@ export interface IUserOrderItems {
 })
 export class OrderPage {
     public order: Order;
-    public tax: number = 0;
-    public delivery: number = 0;
+    public currentUser: User;
 
     public restaurant: Observable<Restaurant>;
     public users: Observable<User[]>;
@@ -54,13 +53,8 @@ export class OrderPage {
     public ngOnInit(): void {
         this._initState();
     }
-
-    public updateOrder(): void {
-        this.order.tax = this.tax;
-        this.order.delivery = this.delivery;
-
-        this._orderService.update(this.order.id, this.order)
-            .subscribe();
+    public showAdd(): boolean {
+        return this.order.time > new Date();
     }
 
     public openSettingsModal(event: Event): void {
@@ -83,8 +77,43 @@ export class OrderPage {
         });
     }
 
+    public goToItem(item: OrderItem, event: Event): void {
+        if (this.currentUser.id === this.order.id || this.currentUser.id === item.userId) {
+            const modal: Modal = this._modalController.create(ItemPopover, {
+                isEdit: true,
+                id: item.id,
+                userId: item.userId,
+                restaurantId: this.order.restaurantId,
+                orderId: this.order.id,
+                mealId: item.mealId,
+                quantity: item.quantity,
+                price: item.price,
+                notes: item.notes
+            });
+            modal.present({ ev: event });
+
+            modal.onDidDismiss(data => {
+                if (data) {
+                    if (data.delete) {
+                        this._orderItemService.delete(item)
+                            .subscribe();
+                    }
+                    else {
+                        this._orderItemService.update(data)
+                            .subscribe();
+                    }
+                }
+            });
+        }
+    }
+
     public openItemModal(event: Event): void {
-        const modal: Modal = this._modalController.create(ItemPopover, { restaurantId: this.order.restaurantId, orderId: this.order.id });
+        const modal: Modal = this._modalController.create(ItemPopover, {
+            isEdit: false,
+            id: 0,
+            restaurantId: this.order.restaurantId,
+            orderId: this.order.id
+        });
         modal.present({ ev: event });
 
         modal.onDidDismiss(item => {
@@ -97,7 +126,7 @@ export class OrderPage {
 
     public calculateTotal(userItem: IUserOrderItems): number {
         const itemsPrices: number = userItem.orderItems.reduce((acc, val) => acc + val.price * val.quantity, 0);
-        return itemsPrices + (itemsPrices * this.tax) / 100;
+        return itemsPrices + (itemsPrices * this.order.tax) / 100;
     }
 
     private _initState(): void {
@@ -109,6 +138,8 @@ export class OrderPage {
         this.users = this._userService.get();
 
         this.user = this.users.map(users => users.find(u => u.id === this.order.userId));
+
+        this.currentUser = this._userService.currentUser;
 
         this.meals = this._mealService.get(this.order.restaurantId);
 

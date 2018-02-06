@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { Modal, ModalController, ViewController } from 'ionic-angular';
+import {
+    AlertController,
+    Modal,
+    ModalController,
+    ViewController
+} from 'ionic-angular';
 import { NavParams } from 'ionic-angular/navigation/nav-params';
 import { Observable } from 'rxjs/Rx';
 import { Meal } from '../../../models/meal.model';
@@ -9,23 +14,31 @@ import { BaseService } from '../../../services/base.service';
 import { MealService } from '../../../services/meal.service';
 import { UserService } from '../../../services/user.service';
 import { MealPopover } from '../meal-popover/meal-popover.component';
+import { User } from '../../../models/user.model';
 
 @Component({
     selector: 'item-popover',
     templateUrl: 'item-popover.component.html'
 })
 export class ItemPopover {
-    public meals: Observable<Meal[]>;
+    public itemId: number = 0;
     public restaurantId: number;
     public orderId: number;
-    public mealId: number = null;
-    public quantity: number = null;
     public notes: string = '';
+    public quantity: number = null;
+    public price: number = null;
+    public mealId: number = null;
+    public userId: number = null;
+
+    public isEdit: boolean;
+    public meals: Observable<Meal[]>;
+    public currentUser: User;
 
     constructor(
         private _navParams: NavParams,
         private _viewController: ViewController,
         private _modalController: ModalController,
+        private _alertController: AlertController,
         private _baseService: BaseService,
         private _mealService: MealService,
         private _userService: UserService
@@ -37,6 +50,19 @@ export class ItemPopover {
 
     public cancel(): void {
         this._viewController.dismiss();
+    }
+
+    public deleteItem(): void {
+        let confirm = this._alertController.create({
+            title: 'Delete item?',
+            message: 'Are you sure you want to delete this item?',
+            buttons: [
+                { text: 'No' },
+                { text: 'Yes', handler: () => { this._viewController.dismiss({ delete: true }); } }
+            ]
+        });
+
+        confirm.present();
     }
 
     public openMealPopover(event: MouseEvent): void {
@@ -57,7 +83,7 @@ export class ItemPopover {
 
     public addItem(): void {
         this._validate();
-        const newItem: OrderItem = new OrderItem(0, this.orderId, this._userService.currentUser.id, this.mealId, 0, +this.quantity, this.notes);
+        const newItem: OrderItem = new OrderItem(this.itemId, this.orderId, this._userService.currentUser.id, this.mealId, this.price, +this.quantity, this.notes);
 
         this._viewController.dismiss(newItem);
     }
@@ -77,11 +103,16 @@ export class ItemPopover {
     }
 
     private _initState(): void {
+        this.isEdit = this._navParams.get('isEdit');
+        this.itemId = this._navParams.get('id');
         this.orderId = this._navParams.get('orderId');
+        this.userId = this._navParams.get('userId');
         this.restaurantId = this._navParams.get('restaurantId');
         this.mealId = this._navParams.get('mealId');
         this.quantity = this._navParams.get('quantity');
+        this.price = this._navParams.get('price');
         this.notes = this._navParams.get('notes');
         this.meals = this._mealService.get(this.restaurantId);
+        this.currentUser = this._userService.currentUser;
     }
 }

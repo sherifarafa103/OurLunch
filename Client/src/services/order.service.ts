@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Order } from '../models/order.model';
 import { BaseService } from '../services/base.service';
-import { HttpService } from '../services/utils/http.service';
 import { CacheService } from '../services/utils/cache.service';
 
 @Injectable()
 export class OrderService {
     constructor(
         private _baseService: BaseService,
-        private _httpService: HttpService,
         private _cacheService: CacheService
     ) { }
 

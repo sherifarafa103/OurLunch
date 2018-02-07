@@ -26,9 +26,21 @@ export class OrderService {
         );
     }
 
-    public getByDate(start: Date, end: Date): Observable<Order[]> {
-        return <Observable<Order[]>>this._httpService.get(`${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}/`)
-            .map(data => data.map(d => Order.importFromApi(d)));
+    public getByDate(start: Date = null, end: Date = null): Observable<Order[]> {
+        if (start === null && end === null) {
+            start = new Date();
+            end = new Date();
+
+            start.setHours(0, 0, 0, 0);
+            end.setHours(23, 59, 59, 999);
+        }
+
+        return <Observable<Order[]>>this._cacheService.get(
+            `${this._baseService.baseUrl}/orders/time/${start.toISOString()}/${end.toISOString()}/`,
+            Order.importFromApi,
+            true,
+            `${this._baseService.baseUrl}/orders`
+        );
     }
 
     public add(order: Order, local: boolean = false): Observable<number> {
@@ -41,24 +53,5 @@ export class OrderService {
 
     public delete(order: Order, local: boolean = false): Observable<void> {
         return this._cacheService.delete(`${this._baseService.baseUrl}/orders`, order.id, local);
-    }
-
-    private _toLocalTimezone(date: Date): string {
-        let pad = n => n < 10 ? '0' + n : n;
-        let tz = date.getTimezoneOffset();
-        let tzs = `${(tz > 0 ? "-" : "+")}${pad(parseInt(<any>Math.abs(tz / 60)))}`;
-
-        if (tz % 60 != 0)
-            tzs += pad(Math.abs(tz % 60));
-
-        if (tz === 0) {
-            tzs = 'Z';
-        }
-
-        return date.getFullYear() + '-'
-            + pad(date.getMonth() + 1) + '-'
-            + pad(date.getDate()) + 'T'
-            + pad(date.getHours()) + ':'
-            + pad(date.getMinutes());
     }
 }

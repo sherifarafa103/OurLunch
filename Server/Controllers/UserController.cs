@@ -69,7 +69,6 @@ namespace TodoApi.Controllers
             using (var db = new OurLunchDatabase())
             {
                 var existingUser = db.UserRepository.GetUserByAlias(user.Alias);
-                System.Console.WriteLine(user.Alias);
 
                 if(existingUser != null)
                 {

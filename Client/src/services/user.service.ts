@@ -34,6 +34,6 @@ export class UserService {
         return this._httpService.post(`${this._baseService.baseUrl}/users`, user)
             .do(id => user.id = id)
             .do(() => this.currentUser = user)
-            .do(() => this._cacheService.post(`${this._baseService.baseUrl}/users`, user, local));
+            .do(() => this._cacheService.post(`${this._baseService.baseUrl}/users`, user, true));
     }
 }

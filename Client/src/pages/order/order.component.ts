@@ -5,7 +5,7 @@ import { Order } from '../../models/order.model';
 import { UserService } from '../../services/user.service';
 import { RestaurantService } from '../../services/restaurant.service';
 import { MealService } from '../../services/meal.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { Restaurant } from '../../models/restaurant.model';
 import { User } from '../../models/user.model';
 import { Meal } from '../../models/meal.model';
@@ -39,6 +39,8 @@ export class OrderPage {
     public time: Observable<string>;
     public userItems: Observable<IUserOrderItems[]>;
 
+    private _orderSubscription: Subscription = new Subscription();
+
     constructor(
         private _navParams: NavParams,
         private _restaurantService: RestaurantService,
@@ -53,6 +55,11 @@ export class OrderPage {
     public ngOnInit(): void {
         this._initState();
     }
+
+    public ngOnDestroy(): void {
+        this._orderSubscription.unsubscribe();
+    }
+
     public showAdd(): boolean {
         return this.order.time > new Date();
     }
@@ -78,7 +85,7 @@ export class OrderPage {
     }
 
     public goToItem(item: OrderItem, event: Event): void {
-        if (this.currentUser.id === this.order.id || this.currentUser.id === item.userId) {
+        if (this.currentUser.id === this.order.userId || this.currentUser.id === item.userId) {
             const modal: Modal = this._modalController.create(ItemPopover, {
                 isEdit: true,
                 id: item.id,
@@ -128,15 +135,22 @@ export class OrderPage {
 
     public calculateTotal(userItem: IUserOrderItems, userCount: number): number {
         const itemsPrices: number = userItem.orderItems.reduce((acc, val) => acc + val.price * val.quantity, 0);
-        return itemsPrices + ((itemsPrices * this.order.tax) / 100) + this.order.delivery / userCount;
+        const fullPrice: number = itemsPrices + ((itemsPrices * this.order.tax) / 100) + this.order.delivery / userCount;
+
+        return Math.round(fullPrice * 100) / 100;
     }
 
     public grandTotal(userItems: IUserOrderItems[]): number {
-        return userItems ? userItems.reduce((acc, val) => acc + this.calculateTotal(val, userItems.length), 0) : 0;
+        return userItems ? Math.round(userItems.reduce((acc, val) => acc + this.calculateTotal(val, userItems.length), 0) * 100) / 100 : 0;
     }
 
     private _initState(): void {
         this.order = this._navParams.get('order');
+
+        this._orderSubscription = this._orderService.getActiveOrders(true)
+            .map(orders => orders.find(o => o.id === this.order.id))
+            .filter(order => order !== undefined)
+            .subscribe(order => this.order = order);
 
         this.restaurant = this._restaurantService.get()
             .map(restaurants => restaurants.find(r => r.id === this.order.restaurantId));
